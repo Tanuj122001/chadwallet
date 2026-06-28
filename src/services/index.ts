@@ -38,6 +38,10 @@ import { ExecutionRemoteDataSourceImpl } from './datasources/ExecutionRemoteData
 import { ISimulationRepository } from './repositories/ISimulationRepository';
 import { SimulationRepository } from './repositories/SimulationRepository';
 import { SimulationRemoteDataSourceImpl } from './datasources/SimulationRemoteDataSource';
+import { IPortfolioAnalyticsRepository } from './repositories/IPortfolioAnalyticsRepository';
+import { PortfolioAnalyticsRepository } from './repositories/PortfolioAnalyticsRepository';
+import { PortfolioAnalyticsRemoteDataSourceImpl } from './datasources/PortfolioAnalyticsRemoteDataSource';
+import { PortfolioAnalyticsLocalDataSourceImpl } from './datasources/PortfolioAnalyticsLocalDataSource';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -50,6 +54,7 @@ export * from './repositories/ISwapRepository';
 export * from './repositories/ITransactionRepository';
 export * from './repositories/IExecutionRepository';
 export * from './repositories/ISimulationRepository';
+export * from './repositories/IPortfolioAnalyticsRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -63,6 +68,7 @@ class ServiceLocator {
   private transactionRepository: ITransactionRepository;
   private executionRepository: IExecutionRepository;
   private simulationRepository: ISimulationRepository;
+  private portfolioAnalyticsRepository: IPortfolioAnalyticsRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -96,6 +102,10 @@ class ServiceLocator {
 
     const simulationRemoteDS = new SimulationRemoteDataSourceImpl();
     this.simulationRepository = new SimulationRepository(simulationRemoteDS);
+
+    const portfolioAnalyticsRemoteDS = new PortfolioAnalyticsRemoteDataSourceImpl();
+    const portfolioAnalyticsLocalDS = new PortfolioAnalyticsLocalDataSourceImpl();
+    this.portfolioAnalyticsRepository = new PortfolioAnalyticsRepository(portfolioAnalyticsRemoteDS, portfolioAnalyticsLocalDS);
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -140,6 +150,10 @@ class ServiceLocator {
 
   public getSimulationRepository(): ISimulationRepository {
     return this.simulationRepository;
+  }
+
+  public getPortfolioAnalyticsRepository(): IPortfolioAnalyticsRepository {
+    return this.portfolioAnalyticsRepository;
   }
 }
 

@@ -26,6 +26,10 @@ class FeatureFlagsManager {
       { key: 'ENABLE_SIMULATION', enabled: true },
       { key: 'ENABLE_MEV_PROTECTION', enabled: true },
       { key: 'ENABLE_SMART_EXECUTION', enabled: true },
+      { key: 'ENABLE_PORTFOLIO_ANALYTICS', enabled: true },
+      { key: 'ENABLE_COST_BASIS', enabled: true },
+      { key: 'ENABLE_HISTORICAL_SNAPSHOTS', enabled: true },
+      { key: 'ENABLE_ADVANCED_ANALYTICS', enabled: true },
     ];
     defaults.forEach(flag => {
       this.remoteFlags.set(flag.key, flag);

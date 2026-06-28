@@ -65,4 +65,5 @@ export * from './SwapDTOs';
 export * from './TransactionDTOs';
 export * from './ExecutionDTOs';
 export * from './SimulationDTOs';
+export * from './PortfolioAnalyticsDTOs';
 

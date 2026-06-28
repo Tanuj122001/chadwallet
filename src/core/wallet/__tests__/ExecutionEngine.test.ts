@@ -120,23 +120,22 @@ describe('ExecutionEngine & Repository Test Suite', () => {
   it('should execute retry logic on confirmation timeouts and rebuild transaction blockhash', async () => {
     // 1st attempt: throws confirmation timeout (poll returns null statuses)
     mockRemoteDS.broadcastTransaction.mockResolvedValueOnce('txSignatureHash12345');
-    
-    // Simulate 4 sequential poll check delays to trigger timeout limit (4 * 10ms = 40ms > 30ms limit)
-    mockRemoteDS.querySignatureStatus.mockResolvedValueOnce(null);
-    mockRemoteDS.querySignatureStatus.mockResolvedValueOnce(null);
-    mockRemoteDS.querySignatureStatus.mockResolvedValueOnce(null);
-    mockRemoteDS.querySignatureStatus.mockResolvedValueOnce(null);
-
-    // 2nd attempt: succeeds instantly
     mockRemoteDS.broadcastTransaction.mockResolvedValueOnce('txSignatureHash54321');
-    mockRemoteDS.querySignatureStatus.mockResolvedValueOnce({
-      signature: 'txSignatureHash54321',
-      slot: 12056,
-      err: null,
-      confirmation_status: 'finalized',
-      confirmations_count: 1,
+
+    mockRemoteDS.querySignatureStatus.mockImplementation((sig: string) => {
+      if (sig === 'txSignatureHash12345') {
+        return Promise.resolve(null);
+      }
+      return Promise.resolve({
+        signature: 'txSignatureHash54321',
+        slot: 12056,
+        err: null,
+        confirmation_status: 'finalized',
+        confirmations_count: 1,
+      });
     });
-    mockRemoteDS.fetchTransactionReceipt.mockResolvedValueOnce({
+
+    mockRemoteDS.fetchTransactionReceipt.mockResolvedValue({
       signature: 'txSignatureHash54321',
       slot: 12056,
       timestamp: Date.now(),
