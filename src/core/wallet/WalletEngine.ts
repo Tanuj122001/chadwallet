@@ -185,7 +185,7 @@ class WalletEngine {
     return profile;
   }
 
-  // 3. Wallet Signer: Detached signature operations
+  
   public signMessage(message: string, privateKeyHex: string): string {
     if (this.lockManager.isLockedOut()) {
       throw new WalletLockedError('Authentication lockout in progress. Signing aborted.');

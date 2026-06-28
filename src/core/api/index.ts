@@ -63,4 +63,5 @@ export * from './MarketDTOs';
 export * from './QuoteDTOs';
 export * from './SwapDTOs';
 export * from './TransactionDTOs';
+export * from './ExecutionDTOs';
 
