@@ -23,6 +23,9 @@ import { SettingsRepository } from './repositories/SettingsRepository';
 import { ISolanaRepository } from './repositories/ISolanaRepository';
 import { SolanaRepository } from './repositories/SolanaRepository';
 import { SolanaRemoteDataSourceImpl } from './datasources/SolanaRemoteDataSource';
+import { IQuoteRepository } from './repositories/IQuoteRepository';
+import { QuoteRepository } from './repositories/QuoteRepository';
+import { QuoteRemoteDataSourceImpl } from './datasources/QuoteRemoteDataSource';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -30,6 +33,7 @@ export * from './repositories/IMarketRepository';
 export * from './repositories/IPortfolioRepository';
 export * from './repositories/ISettingsRepository';
 export * from './repositories/ISolanaRepository';
+export * from './repositories/IQuoteRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -38,6 +42,7 @@ class ServiceLocator {
   private portfolioRepository: IPortfolioRepository;
   private settingsRepository: ISettingsRepository;
   private solanaRepository: ISolanaRepository;
+  private quoteRepository: IQuoteRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -56,6 +61,9 @@ class ServiceLocator {
     this.portfolioRepository = new PortfolioRepository(remoteDS);
     this.settingsRepository = new SettingsRepository(localDS);
     this.solanaRepository = new SolanaRepository(solanaRemoteDS);
+    
+    const quoteRemoteDS = new QuoteRemoteDataSourceImpl();
+    this.quoteRepository = new QuoteRepository(quoteRemoteDS);
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -80,6 +88,10 @@ class ServiceLocator {
 
   public getSolanaRepository(): ISolanaRepository {
     return this.solanaRepository;
+  }
+
+  public getQuoteRepository(): IQuoteRepository {
+    return this.quoteRepository;
   }
 }
 

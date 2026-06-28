@@ -66,4 +66,5 @@ export * from './CacheEngine';
 export * from './Observability';
 export * from './SecurityPipeline';
 export * from './MarketDTOs';
+export * from './QuoteDTOs';
 
