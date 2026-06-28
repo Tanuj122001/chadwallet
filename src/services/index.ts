@@ -18,12 +18,16 @@ import { IPortfolioRepository } from './repositories/IPortfolioRepository';
 import { PortfolioRepository } from './repositories/PortfolioRepository';
 import { ISettingsRepository } from './repositories/ISettingsRepository';
 import { SettingsRepository } from './repositories/SettingsRepository';
+import { ISolanaRepository } from './repositories/ISolanaRepository';
+import { SolanaRepository } from './repositories/SolanaRepository';
+import { SolanaRemoteDataSourceImpl } from './datasources/SolanaRemoteDataSource';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
 export * from './repositories/IMarketRepository';
 export * from './repositories/IPortfolioRepository';
 export * from './repositories/ISettingsRepository';
+export * from './repositories/ISolanaRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -31,6 +35,7 @@ class ServiceLocator {
   private marketRepository: IMarketRepository;
   private portfolioRepository: IPortfolioRepository;
   private settingsRepository: ISettingsRepository;
+  private solanaRepository: ISolanaRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -39,12 +44,14 @@ class ServiceLocator {
     const authLocalDS = new AuthLocalDataSourceImpl();
     const walletRemoteDS = new WalletRemoteDataSourceImpl();
     const walletLocalDS = new WalletLocalDataSourceImpl();
+    const solanaRemoteDS = new SolanaRemoteDataSourceImpl();
 
     this.authRepository = new AuthRepository(authRemoteDS, authLocalDS);
     this.walletRepository = new WalletRepository(walletRemoteDS, walletLocalDS);
     this.marketRepository = new MarketRepository(remoteDS);
     this.portfolioRepository = new PortfolioRepository(remoteDS);
     this.settingsRepository = new SettingsRepository(localDS);
+    this.solanaRepository = new SolanaRepository(solanaRemoteDS);
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -65,6 +72,10 @@ class ServiceLocator {
 
   public getSettingsRepository(): ISettingsRepository {
     return this.settingsRepository;
+  }
+
+  public getSolanaRepository(): ISolanaRepository {
+    return this.solanaRepository;
   }
 }
 

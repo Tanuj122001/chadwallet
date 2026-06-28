@@ -20,14 +20,9 @@ class WebSocketManager {
   private heartbeatTimer?: any;
   private pongTimeoutTimer?: any;
   
-  // Connection Health Monitor attributes
   private pingSentTime = 0;
   private connectionLatencyMs = 0;
-  
-  // Message Queue / Offline Buffer
   private offlineBuffer: unknown[] = [];
-  
-  // Topic -> Callback Set (Topic Router / Event Dispatcher)
   private subscriptions = new Map<string, Set<WebSocketCallback>>();
 
   constructor() {
@@ -98,7 +93,6 @@ class WebSocketManager {
     };
   }
 
-  // Subscription Manager
   public subscribe(topic: string, callback: WebSocketCallback): () => void {
     logger.info(`[WS] Subscribing to topic: ${topic}`);
     let set = this.subscriptions.get(topic);
@@ -108,7 +102,6 @@ class WebSocketManager {
     }
     set.add(callback);
 
-    // If already connected, send subscription message to server
     if (this.isConnected && this.ws) {
       this.send({ event: 'subscribe', topic });
     }
@@ -134,7 +127,6 @@ class WebSocketManager {
     });
   }
 
-  // Message Dispatcher & Topic Router
   private dispatchMessage(message: any): void {
     const topic = message.topic || message.channel;
     if (!topic) return;
@@ -151,7 +143,6 @@ class WebSocketManager {
     }
   }
 
-  // Heartbeat - sends Ping to keep connection alive
   private startHeartbeat(): void {
     this.stopHeartbeat();
     this.heartbeatTimer = setInterval(() => {
@@ -160,7 +151,6 @@ class WebSocketManager {
         this.pingSentTime = Date.now();
         this.send({ type: 'ping', event: 'ping', timestamp: this.pingSentTime });
         
-        // Expect pong within 5 seconds
         this.pongTimeoutTimer = setTimeout(() => {
           logger.warn('[WS] Heartbeat timeout. Reconnecting...');
           this.disconnect();
@@ -185,7 +175,6 @@ class WebSocketManager {
     if (this.pongTimeoutTimer) clearTimeout(this.pongTimeoutTimer);
   }
 
-  // Reconnect: exponential backoff reconnect strategy
   private handleReconnect(): void {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
       logger.error('[WS] Max reconnect attempts reached. Giving up.');
@@ -201,7 +190,6 @@ class WebSocketManager {
     }, delay);
   }
 
-  // Send message - with Offline buffering / Message Queue support
   public send(data: unknown): void {
     if (this.ws && this.isConnected) {
       try {
@@ -216,7 +204,6 @@ class WebSocketManager {
     }
   }
 
-  // Flushes the offline buffer after connection opens
   private flushOfflineBuffer(): void {
     if (this.offlineBuffer.length === 0) return;
     logger.info(`[WS] Flushing ${this.offlineBuffer.length} buffered messages from offline buffer.`);
@@ -228,7 +215,6 @@ class WebSocketManager {
     });
   }
 
-  // Public getters for connection health indicators
   public getLatency(): number {
     return this.connectionLatencyMs;
   }
@@ -238,5 +224,168 @@ class WebSocketManager {
   }
 }
 
+// ---------------------------------------------------------
+// Solana Dedicated WebSocket Manager Implementation
+// ---------------------------------------------------------
+
+export class SolanaWebSocketManager {
+  private ws: WebSocket | null = null;
+  private isConnected = false;
+  private activeUrl = 'wss://api.devnet.solana.com';
+  
+  // Maps pending request IDs to confirmation callbacks
+  private pendingRequests = new Map<number, (subId: number) => void>();
+  private requestCounter = 1;
+  
+  // Maps subscription IDs to callbacks
+  private subMap = new Map<number, WebSocketCallback>();
+  // Tracks logical subscriptions for reconnection recovery
+  private activeSubs = new Set<{ method: string; params: unknown[]; callback: WebSocketCallback }>();
+
+  public connect(clusterUrl: string): void {
+    if (this.ws) {
+      this.ws.close();
+    }
+    
+    // Resolve secure WebSocket URL from HTTP endpoint
+    this.activeUrl = clusterUrl.replace('http://', 'ws://').replace('https://', 'wss://');
+    logger.info(`[SolanaWS] Connecting to ${this.activeUrl}`);
+    
+    try {
+      this.ws = new WebSocket(this.activeUrl);
+      this.setupHandlers();
+    } catch (e) {
+      logger.error('[SolanaWS] Connection initialization failed', e);
+    }
+  }
+
+  private setupHandlers(): void {
+    if (!this.ws) return;
+
+    this.ws.onopen = () => {
+      logger.info('[SolanaWS] Connected successfully.');
+      this.isConnected = true;
+      this.recoverSubscriptions();
+    };
+
+    this.ws.onmessage = (event: any) => {
+      try {
+        const message = JSON.parse(event.data);
+        
+        // Handle subscription request confirmation
+        if (message.id && this.pendingRequests.has(message.id)) {
+          const resolve = this.pendingRequests.get(message.id)!;
+          this.pendingRequests.delete(message.id);
+          resolve(message.result); // result is subscription ID
+          return;
+        }
+
+        // Handle subscription notification messages
+        if (message.method && message.params) {
+          const subId = message.params.subscription;
+          const callback = this.subMap.get(subId);
+          if (callback) {
+            callback(message.params.result);
+          }
+        }
+      } catch (err) {
+        logger.error('[SolanaWS] Parsing payload error', err);
+      }
+    };
+
+    this.ws.onclose = () => {
+      logger.warn('[SolanaWS] Connection closed.');
+      this.isConnected = false;
+      this.ws = null;
+    };
+  }
+
+  // Generic Solana RPC subscription dispatcher
+  private async subscribeRpc(method: string, params: unknown[], callback: WebSocketCallback): Promise<number> {
+    return new Promise((resolve) => {
+      const requestId = this.requestCounter++;
+      this.pendingRequests.set(requestId, resolve);
+      
+      const payload = {
+        jsonrpc: '2.0',
+        id: requestId,
+        method,
+        params,
+      };
+
+      if (this.ws && this.isConnected) {
+        this.ws.send(JSON.stringify(payload));
+      } else {
+        logger.warn('[SolanaWS] Socket not active. Postponing subscription.');
+      }
+    });
+  }
+
+  public async subscribeAccount(publicKey: string, callback: WebSocketCallback): Promise<() => void> {
+    const method = 'accountSubscribe';
+    const params = [publicKey, { commitment: 'confirmed', encoding: 'jsonParsed' }];
+    
+    const subObj = { method, params, callback };
+    this.activeSubs.add(subObj);
+
+    const subId = await this.subscribeRpc(method, params, callback);
+    this.subMap.set(subId, callback);
+    logger.info(`[SolanaWS] Account subscription confirmed: ${publicKey} -> SubID: ${subId}`);
+
+    return () => {
+      this.activeSubs.delete(subObj);
+      this.subMap.delete(subId);
+      if (this.ws && this.isConnected) {
+        this.ws.send(JSON.stringify({
+          jsonrpc: '2.0',
+          id: this.requestCounter++,
+          method: 'accountUnsubscribe',
+          params: [subId],
+        }));
+      }
+    };
+  }
+
+  public async subscribeSlot(callback: WebSocketCallback): Promise<() => void> {
+    const method = 'slotSubscribe';
+    const params: unknown[] = [];
+    
+    const subObj = { method, params, callback };
+    this.activeSubs.add(subObj);
+
+    const subId = await this.subscribeRpc(method, params, callback);
+    this.subMap.set(subId, callback);
+    logger.info(`[SolanaWS] Slot subscription confirmed -> SubID: ${subId}`);
+
+    return () => {
+      this.activeSubs.delete(subObj);
+      this.subMap.delete(subId);
+      if (this.ws && this.isConnected) {
+        this.ws.send(JSON.stringify({
+          jsonrpc: '2.0',
+          id: this.requestCounter++,
+          method: 'slotUnsubscribe',
+          params: [subId],
+        }));
+      }
+    };
+  }
+
+  private async recoverSubscriptions(): Promise<void> {
+    if (this.activeSubs.size === 0) return;
+    logger.info(`[SolanaWS] Recovering ${this.activeSubs.size} active subscriptions on reconnect.`);
+    
+    for (const sub of this.activeSubs) {
+      const newSubId = await this.subscribeRpc(sub.method, sub.params, sub.callback);
+      this.subMap.set(newSubId, sub.callback);
+    }
+  }
+
+  public isSocketConnected(): boolean {
+    return this.isConnected;
+  }
+}
+
 export const webSocketManager = new WebSocketManager();
+export const solanaWebSocketManager = new SolanaWebSocketManager();
 export default webSocketManager;
