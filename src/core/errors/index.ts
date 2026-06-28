@@ -170,3 +170,60 @@ export class UnknownAuthenticationError extends AuthenticationError {
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+
+export class WalletCreationError extends WalletError {
+  constructor(message: string = 'Failed to create wallet.', details?: unknown) {
+    super('WALLET_CREATION_FAILED', message, undefined, details);
+    this.name = 'WalletCreationError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class WalletImportError extends WalletError {
+  constructor(message: string = 'Failed to import wallet.', details?: unknown) {
+    super('WALLET_IMPORT_FAILED', message, undefined, details);
+    this.name = 'WalletImportError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class WalletLockedError extends WalletError {
+  constructor(message: string = 'Wallet is currently locked.', details?: unknown) {
+    super('WALLET_LOCKED', message, undefined, details);
+    this.name = 'WalletLockedError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class InvalidMnemonicError extends WalletError {
+  constructor(message: string = 'Invalid mnemonic checksum or length.', details?: unknown) {
+    super('INVALID_MNEMONIC', message, undefined, details);
+    this.name = 'InvalidMnemonicError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class InvalidPrivateKeyError extends WalletError {
+  constructor(message: string = 'Invalid private key format.', details?: unknown) {
+    super('INVALID_PRIVATE_KEY', message, undefined, details);
+    this.name = 'InvalidPrivateKeyError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class SigningError extends WalletError {
+  constructor(message: string = 'Transaction signing error.', details?: unknown) {
+    super('SIGNING_FAILED', message, undefined, details);
+    this.name = 'SigningError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
+export class BackupRequiredError extends WalletError {
+  constructor(message: string = 'Wallet backup required before proceeding.', details?: unknown) {
+    super('BACKUP_REQUIRED', message, undefined, details);
+    this.name = 'BackupRequiredError';
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+

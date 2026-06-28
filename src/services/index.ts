@@ -6,6 +6,8 @@ import { RemoteDataSourceImpl } from './datasources/RemoteDataSource';
 import { LocalDataSourceImpl } from './datasources/LocalDataSource';
 import { AuthRemoteDataSourceImpl } from './datasources/AuthRemoteDataSource';
 import { AuthLocalDataSourceImpl } from './datasources/AuthLocalDataSource';
+import { WalletRemoteDataSourceImpl } from './datasources/WalletRemoteDataSource';
+import { WalletLocalDataSourceImpl } from './datasources/WalletLocalDataSource';
 import { IAuthRepository } from './repositories/IAuthRepository';
 import { AuthRepository } from './repositories/AuthRepository';
 import { IWalletRepository } from './repositories/IWalletRepository';
@@ -35,9 +37,11 @@ class ServiceLocator {
     const localDS = new LocalDataSourceImpl();
     const authRemoteDS = new AuthRemoteDataSourceImpl();
     const authLocalDS = new AuthLocalDataSourceImpl();
+    const walletRemoteDS = new WalletRemoteDataSourceImpl();
+    const walletLocalDS = new WalletLocalDataSourceImpl();
 
     this.authRepository = new AuthRepository(authRemoteDS, authLocalDS);
-    this.walletRepository = new WalletRepository(remoteDS, localDS);
+    this.walletRepository = new WalletRepository(walletRemoteDS, walletLocalDS);
     this.marketRepository = new MarketRepository(remoteDS);
     this.portfolioRepository = new PortfolioRepository(remoteDS);
     this.settingsRepository = new SettingsRepository(localDS);

@@ -18,6 +18,7 @@ export interface WalletDTO {
   balance_sol: number;
   balance_usd: number;
   is_active: boolean;
+  backup_confirmed?: boolean;
 }
 
 export interface HoldingDTO {

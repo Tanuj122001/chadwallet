@@ -16,6 +16,7 @@ export interface Wallet {
   balanceSol: number;
   balanceUsd: USDValue;
   isActive: boolean;
+  backupConfirmed: boolean;
 }
 
 export interface Holding {

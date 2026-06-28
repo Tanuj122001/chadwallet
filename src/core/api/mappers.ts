@@ -63,6 +63,7 @@ export class WalletMapper {
       balanceSol: dto.balance_sol,
       balanceUsd: dto.balance_usd as USDValue,
       isActive: dto.is_active,
+      backupConfirmed: dto.backup_confirmed ?? false,
     };
   }
 
@@ -74,6 +75,7 @@ export class WalletMapper {
       balance_sol: domain.balanceSol,
       balance_usd: domain.balanceUsd,
       is_active: domain.isActive,
+      backup_confirmed: domain.backupConfirmed,
     };
   }
 }
