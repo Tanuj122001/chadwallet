@@ -35,6 +35,9 @@ import { TransactionRemoteDataSourceImpl } from './datasources/TransactionRemote
 import { IExecutionRepository } from './repositories/IExecutionRepository';
 import { ExecutionRepository } from './repositories/ExecutionRepository';
 import { ExecutionRemoteDataSourceImpl } from './datasources/ExecutionRemoteDataSource';
+import { ISimulationRepository } from './repositories/ISimulationRepository';
+import { SimulationRepository } from './repositories/SimulationRepository';
+import { SimulationRemoteDataSourceImpl } from './datasources/SimulationRemoteDataSource';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -46,6 +49,7 @@ export * from './repositories/IQuoteRepository';
 export * from './repositories/ISwapRepository';
 export * from './repositories/ITransactionRepository';
 export * from './repositories/IExecutionRepository';
+export * from './repositories/ISimulationRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -58,6 +62,7 @@ class ServiceLocator {
   private swapRepository: ISwapRepository;
   private transactionRepository: ITransactionRepository;
   private executionRepository: IExecutionRepository;
+  private simulationRepository: ISimulationRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -88,6 +93,9 @@ class ServiceLocator {
 
     const executionRemoteDS = new ExecutionRemoteDataSourceImpl();
     this.executionRepository = new ExecutionRepository(executionRemoteDS);
+
+    const simulationRemoteDS = new SimulationRemoteDataSourceImpl();
+    this.simulationRepository = new SimulationRepository(simulationRemoteDS);
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -128,6 +136,10 @@ class ServiceLocator {
 
   public getExecutionRepository(): IExecutionRepository {
     return this.executionRepository;
+  }
+
+  public getSimulationRepository(): ISimulationRepository {
+    return this.simulationRepository;
   }
 }
 

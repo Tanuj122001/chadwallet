@@ -15,6 +15,21 @@ class FeatureFlagsManager {
 
   constructor() {
     this.loadLocalOverrides();
+    this.initializeDefaultFlags();
+  }
+
+  private initializeDefaultFlags(): void {
+    const defaults: FeatureFlag[] = [
+      { key: 'ENABLE_REAL_TRADING', enabled: false },
+      { key: 'ENABLE_TRANSACTION_BROADCAST', enabled: false },
+      { key: 'ENABLE_MAINNET', enabled: false },
+      { key: 'ENABLE_SIMULATION', enabled: true },
+      { key: 'ENABLE_MEV_PROTECTION', enabled: true },
+      { key: 'ENABLE_SMART_EXECUTION', enabled: true },
+    ];
+    defaults.forEach(flag => {
+      this.remoteFlags.set(flag.key, flag);
+    });
   }
 
   private loadLocalOverrides(): void {
