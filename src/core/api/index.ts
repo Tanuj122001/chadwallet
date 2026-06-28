@@ -1,18 +1,13 @@
 import { ApiResponse, WalletAddress, TokenSymbol } from '../types';
 import { SwapQuote, SwapTransaction, MarketStats, OHLC, Token } from '../models';
 
-/**
- * Interface Clients for External API Integrations
- */
 
-// Privy embedded wallet auth client
 export interface PrivyClient {
   loginWithOAuth(provider: 'google' | 'apple' | 'twitter'): Promise<ApiResponse<{ token: string; userId: string }>>;
   linkWallet(address: WalletAddress): Promise<ApiResponse<{ signature: string }>>;
   logout(): Promise<void>;
 }
 
-// Jupiter Solana dex aggregator client
 export interface JupiterClient {
   getQuote(params: {
     inputMint: string;
@@ -28,7 +23,6 @@ export interface JupiterClient {
   }): Promise<ApiResponse<SwapTransaction>>;
 }
 
-// Birdeye pricing and historical data provider client
 export interface BirdeyeClient {
   getMarketStats(symbol: TokenSymbol): Promise<ApiResponse<MarketStats>>;
   getOHLCV(symbol: TokenSymbol, interval: '1m' | '5m' | '15m' | '1h' | '1d', limit: number): Promise<ApiResponse<OHLC[]>>;
@@ -68,4 +62,5 @@ export * from './SecurityPipeline';
 export * from './MarketDTOs';
 export * from './QuoteDTOs';
 export * from './SwapDTOs';
+export * from './TransactionDTOs';
 

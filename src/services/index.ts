@@ -29,6 +29,9 @@ import { QuoteRemoteDataSourceImpl } from './datasources/QuoteRemoteDataSource';
 import { ISwapRepository } from './repositories/ISwapRepository';
 import { SwapRepository } from './repositories/SwapRepository';
 import { SwapRemoteDataSourceImpl } from './datasources/SwapRemoteDataSource';
+import { ITransactionRepository } from './repositories/ITransactionRepository';
+import { TransactionRepository } from './repositories/TransactionRepository';
+import { TransactionRemoteDataSourceImpl } from './datasources/TransactionRemoteDataSource';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -38,6 +41,7 @@ export * from './repositories/ISettingsRepository';
 export * from './repositories/ISolanaRepository';
 export * from './repositories/IQuoteRepository';
 export * from './repositories/ISwapRepository';
+export * from './repositories/ITransactionRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -48,6 +52,7 @@ class ServiceLocator {
   private solanaRepository: ISolanaRepository;
   private quoteRepository: IQuoteRepository;
   private swapRepository: ISwapRepository;
+  private transactionRepository: ITransactionRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -72,6 +77,9 @@ class ServiceLocator {
 
     const swapRemoteDS = new SwapRemoteDataSourceImpl();
     this.swapRepository = new SwapRepository(swapRemoteDS);
+
+    const transactionRemoteDS = new TransactionRemoteDataSourceImpl();
+    this.transactionRepository = new TransactionRepository(transactionRemoteDS);
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -104,6 +112,10 @@ class ServiceLocator {
 
   public getSwapRepository(): ISwapRepository {
     return this.swapRepository;
+  }
+
+  public getTransactionRepository(): ITransactionRepository {
+    return this.transactionRepository;
   }
 }
 
