@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { colors } from '../theme/colors';
@@ -11,13 +11,13 @@ export interface SearchBarProps {
   className?: string;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+export const SearchBar = forwardRef<TextInput, SearchBarProps>(({
   value,
   onChangeText,
   placeholder = 'Search tokens',
   onFilterPress = () => { },
   className = '',
-}) => {
+}, ref) => {
   return (
     <View
       className={`flex-row items-center bg-surface border border-borderAlpha rounded-radius-full h-12 px-4 shadow-sm ${className}`}
@@ -32,6 +32,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       />
 
       <TextInput
+        ref={ref}
         className="flex-1 text-white text-[14px] font-medium h-full py-0 ml-3"
         placeholder={placeholder}
         placeholderTextColor={colors.textMuted}
@@ -59,6 +60,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default SearchBar;

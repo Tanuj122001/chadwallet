@@ -5,3 +5,5 @@ export * from './trading/tradeStore';
 export * from './portfolio/portfolioStore';
 export * from './settings/settingsStore';
 export * from './notifications/notificationStore';
+export * from './uiStore';
+

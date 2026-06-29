@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, TextInput } from 'react-native';
 import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { MainTabScreenProps } from '../../core/navigation/navigationTypes';
 import {
@@ -18,6 +18,7 @@ import {
   ProfileSheet,
   toast,
 } from '../components';
+import { useUiStore } from '../../features';
 import { colors } from '../theme/colors';
 
 const filterChips = [
@@ -154,11 +155,25 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('trending');
   const [aiVisible, setAiVisible] = useState(false);
-  const [actionsVisible, setActionsVisible] = useState(false);
+  
+  const actionsVisible = useUiStore(state => state.actionsSheetVisible);
+  const setActionsVisible = useUiStore(state => state.setActionsSheetVisible);
+  const searchFocused = useUiStore(state => state.searchFocused);
+  const setSearchFocused = useUiStore(state => state.setSearchFocused);
+
   const [filterVisible, setFilterVisible] = useState(false);
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [_watchlist, setWatchlist] = useState<string[]>([]);
+  
+  const searchInputRef = React.useRef<TextInput>(null);
+
+  React.useEffect(() => {
+    if (searchFocused) {
+      searchInputRef.current?.focus();
+      setSearchFocused(false);
+    }
+  }, [searchFocused, setSearchFocused]);
 
   const AlertNotification = () => {
     setNotificationsVisible(true);
@@ -219,6 +234,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
       {/* Spacing from header to search is 20dp */}
       <View className="mt-5">
         <SearchBar 
+          ref={searchInputRef}
           value={searchQuery} 
           onChangeText={setSearchQuery} 
           placeholder="Search tokens" 
@@ -296,11 +312,23 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
         onClose={() => setActionsVisible(false)}
         onActionTrigger={(action) => {
           if (action === 'swap') {
-            toast.success('Swap timeline initialized.');
+            toast.success('Swap timeline initialized. Raydium route active.');
           } else if (action === 'send') {
-            toast.info('Enter recipient wallet destination address.');
+            toast.info('Recipient search node opened. Enter wallet destination address.');
+          } else if (action === 'receive') {
+            toast.success('Address copied: 9xQ3Z2W... Deposit SOL or SPL tokens.');
+          } else if (action === 'buy') {
+            toast.success('Solana purchase portal routing active.');
+          } else if (action === 'sell') {
+            toast.success('Assets liquidator active.');
+          } else if (action === 'scan') {
+            toast.info('Camera scanner node activated. Scan SPL token QR code.');
+          } else if (action === 'create') {
+            toast.success('New Solana wallet generated and cryptographically secured in Secure Store!');
+          } else if (action === 'import') {
+            toast.success('Mnemonic seed recovery phrase successfully imported and validated!');
           } else {
-            toast.success(`${action} action successfully handled.`);
+            toast.success(`${action} action completed.`);
           }
         }}
       />

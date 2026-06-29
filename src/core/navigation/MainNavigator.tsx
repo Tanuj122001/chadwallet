@@ -1,13 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Alert } from 'react-native';
 import { MainStackParamList, MainTabParamList } from './navigationTypes';
 import { HomeScreen } from '../../shared/screens/HomeScreen';
 import { PortfolioScreen } from '../../shared/screens/PortfolioScreen';
 import { SettingsScreen } from '../../shared/screens/SettingsScreen';
 import { TokenDetailsScreen } from '../../shared/screens/TokenDetailsScreen';
 import { BottomTabBar } from '../../shared/components/BottomTabBar';
+import { useUiStore } from '../../features/uiStore';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const Stack = createNativeStackNavigator<MainStackParamList>();
@@ -23,17 +23,9 @@ const TabNavigator: React.FC = () => {
             activeTab={activeRouteName}
             onTabPress={(tab: string) => {
               if (tab === 'Plus') {
-                Alert.alert(
-                  'Quick Action Menu',
-                  'Trade / Swap menu actions simulated.',
-                  [{ text: 'Close' }]
-                );
+                useUiStore.getState().setActionsSheetVisible(true);
               } else if (tab === 'Search') {
-                Alert.alert(
-                  'Search Activity',
-                  'Search navigation menu actions simulated.',
-                  [{ text: 'Close' }]
-                );
+                useUiStore.getState().setSearchFocused(true);
               } else {
                 props.navigation.navigate(tab);
               }

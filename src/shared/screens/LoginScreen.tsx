@@ -4,6 +4,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { AppText } from '../components/AppText';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { useAuth } from '../../core/navigation/AuthContext';
+import { toast, ToastManager } from '../components';
 import { colors } from '../theme/colors';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
@@ -78,6 +79,7 @@ export const LoginScreen: React.FC = () => {
             activeOpacity={0.88}
             className="items-center py-2"
             accessibilityRole="button"
+            onPress={() => toast.info('Restore seed phrase module selected.')}
           >
             <AppText variant="caption" color="primary" weight="semibold">
               Restore from Seed Phrase
@@ -85,6 +87,7 @@ export const LoginScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      <ToastManager />
     </ScreenContainer>
   );
 };
