@@ -7,6 +7,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { TokenAvatar } from '../components/TokenAvatar';
 import { AppText } from '../components/AppText';
 import { colors } from '../theme/colors';
+import { AiCopilotModal } from '../components/AiCopilotModal';
 
 // Detailed Token structure with extended time filters support
 interface DetailedTokenInfo {
@@ -192,6 +193,7 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
 
   const [selectedFilter, setSelectedFilter] = useState<'1H' | '4H' | '1D' | '1W' | '1M' | '1Y' | 'ALL'>('1D');
   const [isWatchlisted, setIsWatchlisted] = useState(false);
+  const [aiVisible, setAiVisible] = useState(false);
 
   const isPositive = tokenInfo.change24h >= 0;
   const performanceColor = isPositive ? '#22F27C' : '#FF5C5C';
@@ -343,6 +345,20 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
               iconStyle="solid"
             />
           </TouchableOpacity>
+
+          {/* AI Copilot magic trigger */}
+          <TouchableOpacity
+            activeOpacity={0.88}
+            className="w-10 h-10 rounded-full bg-surface border border-borderAlpha items-center justify-center"
+            onPress={() => setAiVisible(true)}
+          >
+            <FontAwesome6
+              name="wand-magic-sparkles"
+              size={18}
+              color={colors.accent}
+              iconStyle="solid"
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -411,6 +427,8 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
           </View>
         </View>
       </View>
+
+      <AiCopilotModal visible={aiVisible} onClose={() => setAiVisible(false)} />
     </ScreenContainer>
   );
 };

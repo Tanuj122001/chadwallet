@@ -10,6 +10,7 @@ import {
   TokenCard,
   TokenData,
   FloatingActionButton,
+  AiCopilotModal,
 } from '../components';
 import { colors } from '../theme/colors';
 
@@ -146,6 +147,7 @@ const MOCK_TOKENS: TokenData[] = [
 export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('trending');
+  const [aiVisible, setAiVisible] = useState(false);
 
   const AlertNotification = () => {
     Alert.alert(
@@ -164,11 +166,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
   };
 
   const handleWalletActions = () => {
-    Alert.alert(
-      'Wallet Options',
-      'Quick wallet metrics and options connection simulated.',
-      [{ text: 'Dismiss' }]
-    );
+    setAiVisible(true);
   };
 
   const filteredTokens = useMemo(() => {
@@ -270,6 +268,8 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
 
       {/* Floating Action Button */}
       <FloatingActionButton onPress={handleWalletActions} />
+
+      <AiCopilotModal visible={aiVisible} onClose={() => setAiVisible(false)} />
     </ScreenContainer>
   );
 };

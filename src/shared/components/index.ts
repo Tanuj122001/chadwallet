@@ -31,3 +31,4 @@ export * from './BottomTabItem';
 export * from './StatCard';
 export * from './ContractCard';
 export * from './SocialButton';
+export * from './AiCopilotModal';
