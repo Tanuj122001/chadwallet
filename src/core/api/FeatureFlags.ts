@@ -37,6 +37,17 @@ class FeatureFlagsManager {
       { key: 'ENABLE_SECURITY_ALERTS', enabled: true },
       { key: 'ENABLE_MARKET_MONITOR', enabled: true },
       { key: 'ENABLE_BLOCKCHAIN_MONITOR', enabled: true },
+      { key: 'ENABLE_AI', enabled: true },
+      { key: 'ENABLE_AI_MARKET', enabled: true },
+      { key: 'ENABLE_AI_PORTFOLIO', enabled: true },
+      { key: 'ENABLE_AI_SECURITY', enabled: true },
+      { key: 'ENABLE_AI_EXPLANATIONS', enabled: true },
+      { key: 'ENABLE_AI_CHAT', enabled: true },
+      { key: 'ENABLE_AI_PREDICTIONS', enabled: true },
+      { key: 'ENABLE_AI_RECOMMENDATIONS', enabled: true },
+      { key: 'ENABLE_AI_AUTO_TRADE', enabled: false },
+      { key: 'ENABLE_AI_AUTO_REBALANCE', enabled: false },
+      { key: 'ENABLE_AI_AUTO_DCA', enabled: false },
     ];
     defaults.forEach(flag => {
       this.remoteFlags.set(flag.key, flag);
