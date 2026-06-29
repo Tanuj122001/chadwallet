@@ -30,6 +30,13 @@ class FeatureFlagsManager {
       { key: 'ENABLE_COST_BASIS', enabled: true },
       { key: 'ENABLE_HISTORICAL_SNAPSHOTS', enabled: true },
       { key: 'ENABLE_ADVANCED_ANALYTICS', enabled: true },
+      { key: 'ENABLE_EVENTS', enabled: true },
+      { key: 'ENABLE_ALERTS', enabled: true },
+      { key: 'ENABLE_AUTOMATION', enabled: true },
+      { key: 'ENABLE_BACKGROUND_SYNC', enabled: true },
+      { key: 'ENABLE_SECURITY_ALERTS', enabled: true },
+      { key: 'ENABLE_MARKET_MONITOR', enabled: true },
+      { key: 'ENABLE_BLOCKCHAIN_MONITOR', enabled: true },
     ];
     defaults.forEach(flag => {
       this.remoteFlags.set(flag.key, flag);

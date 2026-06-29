@@ -42,6 +42,8 @@ import { IPortfolioAnalyticsRepository } from './repositories/IPortfolioAnalytic
 import { PortfolioAnalyticsRepository } from './repositories/PortfolioAnalyticsRepository';
 import { PortfolioAnalyticsRemoteDataSourceImpl } from './datasources/PortfolioAnalyticsRemoteDataSource';
 import { PortfolioAnalyticsLocalDataSourceImpl } from './datasources/PortfolioAnalyticsLocalDataSource';
+import { IEventRepository } from './repositories/IEventRepository';
+import { EventRepository } from './repositories/EventRepository';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -55,6 +57,7 @@ export * from './repositories/ITransactionRepository';
 export * from './repositories/IExecutionRepository';
 export * from './repositories/ISimulationRepository';
 export * from './repositories/IPortfolioAnalyticsRepository';
+export * from './repositories/IEventRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -69,6 +72,7 @@ class ServiceLocator {
   private executionRepository: IExecutionRepository;
   private simulationRepository: ISimulationRepository;
   private portfolioAnalyticsRepository: IPortfolioAnalyticsRepository;
+  private eventRepository: IEventRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -106,6 +110,7 @@ class ServiceLocator {
     const portfolioAnalyticsRemoteDS = new PortfolioAnalyticsRemoteDataSourceImpl();
     const portfolioAnalyticsLocalDS = new PortfolioAnalyticsLocalDataSourceImpl();
     this.portfolioAnalyticsRepository = new PortfolioAnalyticsRepository(portfolioAnalyticsRemoteDS, portfolioAnalyticsLocalDS);
+    this.eventRepository = new EventRepository();
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -154,6 +159,10 @@ class ServiceLocator {
 
   public getPortfolioAnalyticsRepository(): IPortfolioAnalyticsRepository {
     return this.portfolioAnalyticsRepository;
+  }
+
+  public getEventRepository(): IEventRepository {
+    return this.eventRepository;
   }
 }
 

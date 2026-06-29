@@ -3,14 +3,6 @@ global.__DEV__ = true;
 global.__fbBatchedBridgeConfig = { remoteModuleConfig: [] };
 
 // Mock Platform as virtual and physical module to avoid native OS check errors under Node test environment
-const platformMock = {
-  OS: 'android',
-  select: (objs) => objs.android || objs.default,
-  Version: 30,
-};
-
-jest.mock('react-native/Libraries/Utilities/Platform', () => platformMock);
-jest.mock('Platform', () => platformMock, { virtual: true });
 
 // Mock react-native package components and utilities completely
 jest.mock('react-native', () => ({
@@ -145,34 +137,37 @@ jest.mock('react-native-svg', () => ({
   G: 'G',
 }));
 
-// Setup globally reusable mock repositories
-const mockSolanaRepository = {
-  getNativeBalance: jest.fn(() => Promise.resolve(0)),
-  getTokenHoldings: jest.fn(() => Promise.resolve([])),
-  getTransactionHistory: jest.fn(() => Promise.resolve([])),
-  getTransactionDetails: jest.fn(),
-};
-
-const mockMarketRepository = {
-  getPrices: jest.fn(() => Promise.resolve({})),
-  getMarketStats: jest.fn(),
-  getPriceHistory: jest.fn(),
-  getTrendingTokens: jest.fn(),
-};
-
-const mockPortfolioAnalyticsRepository = {
-  getPortfolioAnalytics: jest.fn(),
-  getHistoricalSnapshots: jest.fn(),
-  addSnapshot: jest.fn(),
-  clearPortfolioCache: jest.fn(),
-};
-
 // Mock service locator to prevent loading concrete network / storage data sources
-jest.mock('./src/services/index', () => ({
-  serviceLocator: {
+jest.mock('./src/services/index', () => {
+  const mockSolanaRepository = {
+    getNativeBalance: jest.fn(() => Promise.resolve(0)),
+    getTokenHoldings: jest.fn(() => Promise.resolve([])),
+    getTransactionHistory: jest.fn(() => Promise.resolve([])),
+    getTransactionDetails: jest.fn(),
+  };
+
+  const mockMarketRepository = {
+    getPrices: jest.fn(() => Promise.resolve({})),
+    getMarketStats: jest.fn(),
+    getPriceHistory: jest.fn(),
+    getTrendingTokens: jest.fn(),
+  };
+
+  const mockPortfolioAnalyticsRepository = {
+    getPortfolioAnalytics: jest.fn(),
+    getHistoricalSnapshots: jest.fn(),
+    addSnapshot: jest.fn(),
+    clearPortfolioCache: jest.fn(),
+  };
+
+  const { EventRepository } = require('./src/services/repositories/EventRepository');
+  const mockEventRepositoryInstance = new EventRepository();
+
+  const mockServiceLocator = {
     getSolanaRepository: () => mockSolanaRepository,
     getMarketRepository: () => mockMarketRepository,
     getPortfolioAnalyticsRepository: () => mockPortfolioAnalyticsRepository,
+    getEventRepository: () => mockEventRepositoryInstance,
     getAuthRepository: () => ({}),
     getWalletRepository: () => ({}),
     getPortfolioRepository: () => ({}),
@@ -182,14 +177,14 @@ jest.mock('./src/services/index', () => ({
     getTransactionRepository: () => ({}),
     getExecutionRepository: () => ({}),
     getSimulationRepository: () => ({}),
-  },
-  __esModule: true,
-  default: {
-    getSolanaRepository: () => mockSolanaRepository,
-    getMarketRepository: () => mockMarketRepository,
-    getPortfolioAnalyticsRepository: () => mockPortfolioAnalyticsRepository,
-  }
-}));
+  };
+
+  return {
+    serviceLocator: mockServiceLocator,
+    __esModule: true,
+    default: mockServiceLocator,
+  };
+});
 
 // Mock useAuthStore to prevent async session restore operations in tests
 jest.mock('./src/features/auth/authStore', () => {
