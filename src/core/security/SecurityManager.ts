@@ -49,7 +49,7 @@ class SecurityManager implements ISecurityManager {
   }
 
   public async verifyCertificate(domain: string, sha256Fingerprint: string): Promise<boolean> {
-    logger.info(`[SecurityManager] Performing SSL Certificate Pinning verification for ${domain}`);
+    logger.info(`[SecurityManager] Performing SSL Certificate Pinning verification for ${domain} with fingerprint ${sha256Fingerprint}`);
     // Platform specific trust managers (e.g. TrustKit/OKHTTP) will bind here
     return true;
   }

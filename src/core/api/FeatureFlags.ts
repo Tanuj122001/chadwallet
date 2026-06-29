@@ -48,6 +48,22 @@ class FeatureFlagsManager {
       { key: 'ENABLE_AI_AUTO_TRADE', enabled: false },
       { key: 'ENABLE_AI_AUTO_REBALANCE', enabled: false },
       { key: 'ENABLE_AI_AUTO_DCA', enabled: false },
+      // Phase 15: Enterprise Security & Observability
+      { key: 'ENABLE_RUNTIME_SECURITY', enabled: true },
+      { key: 'ENABLE_FRAUD_ENGINE', enabled: true },
+      { key: 'ENABLE_ROOT_DETECTION', enabled: true },
+      { key: 'ENABLE_APP_INTEGRITY', enabled: true },
+      { key: 'ENABLE_SECURE_CLIPBOARD', enabled: true },
+      { key: 'ENABLE_OVERLAY_DETECTION', enabled: true },
+      { key: 'ENABLE_SSL_PINNING', enabled: true },
+      { key: 'ENABLE_CERT_ROTATION', enabled: true },
+      { key: 'ENABLE_STRUCTURED_TELEMETRY', enabled: true },
+      { key: 'ENABLE_CRASH_REPORTING', enabled: true },
+      { key: 'ENABLE_OBSERVABILITY', enabled: true },
+      { key: 'ENABLE_PERFORMANCE_MONITORING', enabled: true },
+      { key: 'ENABLE_MEMORY_PROFILER', enabled: true },
+      { key: 'ENABLE_RPC_HEALTH', enabled: true },
+      { key: 'ENABLE_AI_SECURITY', enabled: true },
     ];
     defaults.forEach(flag => {
       this.remoteFlags.set(flag.key, flag);

@@ -166,12 +166,16 @@ jest.mock('./src/services/index', () => {
   const { AIRepository } = require('./src/services/repositories/AIRepository');
   const mockAIRepositoryInstance = new AIRepository();
 
+  const { SecurityRepository } = require('./src/services/repositories/SecurityRepository');
+  const mockSecurityRepositoryInstance = new SecurityRepository();
+
   const mockServiceLocator = {
     getSolanaRepository: () => mockSolanaRepository,
     getMarketRepository: () => mockMarketRepository,
     getPortfolioAnalyticsRepository: () => mockPortfolioAnalyticsRepository,
     getEventRepository: () => mockEventRepositoryInstance,
     getAIRepository: () => mockAIRepositoryInstance,
+    getSecurityRepository: () => mockSecurityRepositoryInstance,
     getAuthRepository: () => ({}),
     getWalletRepository: () => ({}),
     getPortfolioRepository: () => ({}),

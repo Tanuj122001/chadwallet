@@ -46,6 +46,8 @@ import { IEventRepository } from './repositories/IEventRepository';
 import { EventRepository } from './repositories/EventRepository';
 import { IAIRepository } from './repositories/IAIRepository';
 import { AIRepository } from './repositories/AIRepository';
+import { ISecurityRepository } from './repositories/ISecurityRepository';
+import { SecurityRepository } from './repositories/SecurityRepository';
 
 export * from './repositories/IAuthRepository';
 export * from './repositories/IWalletRepository';
@@ -61,6 +63,7 @@ export * from './repositories/ISimulationRepository';
 export * from './repositories/IPortfolioAnalyticsRepository';
 export * from './repositories/IEventRepository';
 export * from './repositories/IAIRepository';
+export * from './repositories/ISecurityRepository';
 
 class ServiceLocator {
   private authRepository: IAuthRepository;
@@ -77,6 +80,7 @@ class ServiceLocator {
   private portfolioAnalyticsRepository: IPortfolioAnalyticsRepository;
   private eventRepository: IEventRepository;
   private aiRepository: IAIRepository;
+  private securityRepository: ISecurityRepository;
 
   constructor() {
     const remoteDS = new RemoteDataSourceImpl();
@@ -116,6 +120,7 @@ class ServiceLocator {
     this.portfolioAnalyticsRepository = new PortfolioAnalyticsRepository(portfolioAnalyticsRemoteDS, portfolioAnalyticsLocalDS);
     this.eventRepository = new EventRepository();
     this.aiRepository = new AIRepository();
+    this.securityRepository = new SecurityRepository();
   }
 
   public getAuthRepository(): IAuthRepository {
@@ -172,6 +177,10 @@ class ServiceLocator {
 
   public getAIRepository(): IAIRepository {
     return this.aiRepository;
+  }
+
+  public getSecurityRepository(): ISecurityRepository {
+    return this.securityRepository;
   }
 }
 
