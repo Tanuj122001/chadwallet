@@ -23,7 +23,7 @@ export interface MarketState {
   fetchPrices: (mints: string[]) => Promise<void>;
 }
 
-export const useMarketStore = create<MarketState>((set, get) => ({
+export const useMarketStore = create<MarketState>((set, _get) => ({
   stats: {},
   history: {},
   trending: [],
@@ -39,7 +39,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
         stats: { ...state.stats, [symbol]: stats },
         loadingState: 'success',
       }));
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },
@@ -53,7 +53,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
         history: { ...state.history, [`${symbol}_${range}`]: ohlc },
         loadingState: 'success',
       }));
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },
@@ -64,7 +64,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
       const marketRepo = serviceLocator.getMarketRepository();
       const trending = await marketRepo.getTrendingTokens();
       set({ trending, loadingState: 'success' });
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },
@@ -109,7 +109,7 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
       const marketRepo = serviceLocator.getMarketRepository();
       const watchlists = await marketRepo.getWatchlists();
       set({ watchlists, loading: false });
-    } catch (e) {
+    } catch {
       set({ loading: false });
     }
   },
@@ -251,7 +251,7 @@ export interface ChartState {
   setInterval: (range: '1H' | '4H' | '1D' | '1W' | '1M' | '1Y' | 'ALL') => void;
 }
 
-export const useChartStore = create<ChartState>((set, get) => ({
+export const useChartStore = create<ChartState>((set, _get) => ({
   chartData: {},
   activeInterval: '1D',
   loading: false,
@@ -265,7 +265,7 @@ export const useChartStore = create<ChartState>((set, get) => ({
         chartData: { ...state.chartData, [`${symbol}_${range}`]: ohlc },
         loading: false,
       }));
-    } catch (e) {
+    } catch {
       set({ loading: false });
     }
   },

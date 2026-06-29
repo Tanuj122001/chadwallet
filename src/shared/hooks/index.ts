@@ -6,7 +6,6 @@ import { useTradeStore } from '../../features/trading/tradeStore';
 import { usePortfolioStore } from '../../features/portfolio/portfolioStore';
 import { useSettingsStore } from '../../features/settings/settingsStore';
 import { TokenSymbol, WalletAddress } from '../../core/types';
-import { Token } from '../../core/models';
 
 /**
  * Custom React Hooks Bridging UI Screens to state management slices

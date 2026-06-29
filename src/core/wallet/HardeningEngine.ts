@@ -14,7 +14,6 @@
  */
 
 import { logger } from '../../utils/logger';
-import { featureFlagsManager } from '../api/FeatureFlags';
 import { CircuitBreakerStatusDTO, CircuitState } from '../api/ObservabilityDTOs';
 
 // ---------------------------------------------------------

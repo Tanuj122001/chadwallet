@@ -1,4 +1,3 @@
-import { jupiterApiClient } from '../../core/api/ApiClient';
 import { SwapDTO } from '../../core/api/SwapDTOs';
 import { logger } from '../../utils/logger';
 

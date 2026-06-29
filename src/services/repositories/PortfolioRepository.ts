@@ -1,7 +1,7 @@
 import { IPortfolioRepository } from './IPortfolioRepository';
 import { IRemoteDataSource } from '../datasources/RemoteDataSource';
 import { Portfolio } from '../../core/models';
-import { WalletAddress, USDValue, Percentage, TokenSymbol, PublicKey } from '../../core/types';
+import { WalletAddress, USDValue, Percentage } from '../../core/types';
 import { PortfolioMapper } from '../../core/api/mappers';
 import { offlineManager } from '../../core/offline/OfflineManager';
 import { logger } from '../../utils/logger';

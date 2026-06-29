@@ -31,7 +31,7 @@ export const useTradeStore = create<TradeState>((set, get) => ({
         routePlan: [],
       };
       set({ quote: mockQuote, loadingState: 'success' });
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },

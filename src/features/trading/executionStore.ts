@@ -16,7 +16,7 @@ export interface ExecutionStoreState {
   resetExecution: () => void;
 }
 
-export const useExecutionStore = create<ExecutionStoreState>((set, get) => ({
+export const useExecutionStore = create<ExecutionStoreState>((set, _get) => ({
   activeExecution: null,
   history: [],
   queued: [],

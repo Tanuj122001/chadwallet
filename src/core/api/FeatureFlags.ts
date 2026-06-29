@@ -64,6 +64,16 @@ class FeatureFlagsManager {
       { key: 'ENABLE_MEMORY_PROFILER', enabled: true },
       { key: 'ENABLE_RPC_HEALTH', enabled: true },
       { key: 'ENABLE_AI_SECURITY', enabled: true },
+      // Phase 16: Production Integrations & Global Release
+      { key: 'ENABLE_DEX_PROVIDERS', enabled: true },
+      { key: 'ENABLE_FIAT', enabled: false },
+      { key: 'ENABLE_EXCHANGE_CONNECTIVITY', enabled: false },
+      { key: 'ENABLE_PUSH_NOTIFICATIONS', enabled: true },
+      { key: 'ENABLE_RELEASE_MANAGER', enabled: true },
+      { key: 'ENABLE_ANALYTICS', enabled: true },
+      { key: 'ENABLE_BACKGROUND_REFRESH', enabled: true },
+      { key: 'ENABLE_RPC_FAILOVER', enabled: true },
+      { key: 'ENABLE_REMOTE_KILL_SWITCH', enabled: false },
     ];
     defaults.forEach(flag => {
       this.remoteFlags.set(flag.key, flag);

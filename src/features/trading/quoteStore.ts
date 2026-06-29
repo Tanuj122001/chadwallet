@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 import { QuoteDTO } from '../../core/api/QuoteDTOs';
 import { serviceLocator } from '../../services';
-import { logger } from '../../utils/logger';
-
 // ---------------------------------------------------------
 // 1. Quote Store (Refreshes, selected routes, errors)
 // ---------------------------------------------------------

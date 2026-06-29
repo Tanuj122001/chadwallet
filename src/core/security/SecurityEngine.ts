@@ -952,10 +952,10 @@ export class SecurityAuditEngine {
       app_version: '1.0.0',
       build_number: '1',
       bundle_id: 'com.chadwallet',
-      binary_checksum: AppIntegrityManager.EXPECTED_CHECKSUM,
-      expected_checksum: AppIntegrityManager.EXPECTED_CHECKSUM,
-      signature_hash: AppIntegrityManager.EXPECTED_SIGNATURE,
-      expected_signature: AppIntegrityManager.EXPECTED_SIGNATURE,
+      binary_checksum: (AppIntegrityManager as any).EXPECTED_CHECKSUM,
+      expected_checksum: (AppIntegrityManager as any).EXPECTED_CHECKSUM,
+      signature_hash: (AppIntegrityManager as any).EXPECTED_SIGNATURE,
+      expected_signature: (AppIntegrityManager as any).EXPECTED_SIGNATURE,
     };
   }
 }

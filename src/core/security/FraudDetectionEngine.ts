@@ -1,12 +1,3 @@
-/**
- * Fraud Detection Engine — Transaction Fraud Analysis, Pattern Detection & Risk Scoring
- *
- * Detects: wallet draining, rapid transfers, failed signing, suspicious approvals,
- * unknown programs, fake metadata, rug pulls, upgradeable contracts, blacklisted addresses,
- * scam contracts, abnormal velocity, wash trading, volume manipulation, spoofing,
- * front-running, sandwich attacks, replay attempts, duplicate transactions, signature anomalies.
- */
-
 import { logger } from '../../utils/logger';
 import { featureFlagsManager } from '../api/FeatureFlags';
 import {
@@ -491,23 +482,14 @@ export class FraudDetectionEngine {
     return PatternDetector.detectDuplicateTransaction(signatures);
   }
 
-  /**
-   * Add address to blacklist
-   */
   public addToBlacklist(entry: BlacklistEntryDTO): void {
     this.blacklistRegistry.addEntry(entry);
   }
 
-  /**
-   * Check if address is blacklisted
-   */
   public isBlacklisted(address: string): BlacklistEntryDTO | null {
     return this.blacklistRegistry.isBlacklisted(address);
   }
-
-  /**
-   * Get velocity metrics
-   */
+  
   public getVelocity(walletAddress: string, windowMinutes: number): VelocityMetricDTO {
     return this.velocityTracker.getMetrics(walletAddress, windowMinutes);
   }

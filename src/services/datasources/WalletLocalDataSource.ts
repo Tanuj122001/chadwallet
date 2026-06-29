@@ -1,4 +1,4 @@
-import { secureStorage, tokenManager } from '../../core/storage';
+import { secureStorage } from '../../core/storage';
 import { WalletDTO } from '../../core/api/dtos';
 import { WalletEncryptionManager } from '../../core/wallet/WalletEngine';
 import { logger } from '../../utils/logger';

@@ -2,7 +2,6 @@ import { ISolanaRepository } from './ISolanaRepository';
 import { SolanaRemoteDataSource, SolanaHoldingDTO } from '../datasources/SolanaRemoteDataSource';
 import { DecodedTransaction, transactionDecoder } from '../../core/wallet/TransactionDecoder';
 import { logger } from '../../utils/logger';
-import { RpcError } from '../../core/errors';
 
 export class SolanaRepository implements ISolanaRepository {
   constructor(private remoteDS: SolanaRemoteDataSource) {}

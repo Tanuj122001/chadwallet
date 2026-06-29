@@ -23,7 +23,7 @@ export interface TransactionStoreState {
   resetBuilder: () => void;
 }
 
-export const useTransactionStore = create<TransactionStoreState>((set, get) => ({
+export const useTransactionStore = create<TransactionStoreState>((set, _get) => ({
   activeTransaction: null,
   blockhash: null,
   status: 'idle',

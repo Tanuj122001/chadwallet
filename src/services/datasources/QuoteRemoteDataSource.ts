@@ -1,4 +1,3 @@
-import { jupiterApiClient } from '../../core/api/ApiClient';
 import { QuoteDTO, RouteDTO } from '../../core/api/QuoteDTOs';
 import { logger } from '../../utils/logger';
 

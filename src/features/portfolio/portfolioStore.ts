@@ -18,7 +18,7 @@ export const usePortfolioStore = create<PortfolioState>((set) => ({
       const portfolioRepo = serviceLocator.getPortfolioRepository();
       const portfolio = await portfolioRepo.getPortfolio(address);
       set({ portfolio, loadingState: 'success' });
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },

@@ -130,7 +130,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       if (active) {
         get().fetchSolanaData(active.address);
       }
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },
@@ -146,7 +146,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       if (active) {
         get().fetchSolanaData(active.address);
       }
-    } catch (error) {
+    } catch {
       set({ loadingState: 'error' });
     }
   },

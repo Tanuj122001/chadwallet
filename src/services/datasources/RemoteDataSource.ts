@@ -1,5 +1,5 @@
 import { birdeyeApiClient, jupiterApiClient, supabaseApiClient, authApiClient } from '../../core/api/ApiClient';
-import { UserDTO, TokenDTO, WalletDTO, PortfolioDTO, SwapQuoteDTO, MarketStatsDTO, OHLCDTO } from '../../core/api/dtos';
+import { UserDTO, TokenDTO, PortfolioDTO, SwapQuoteDTO, MarketStatsDTO, OHLCDTO } from '../../core/api/dtos';
 import { TokenSymbol, WalletAddress } from '../../core/types';
 
 export interface IRemoteDataSource {

@@ -2,7 +2,7 @@ import { IMarketRepository } from './IMarketRepository';
 import { MarketRemoteDataSource } from '../datasources/MarketRemoteDataSource';
 import { MarketLocalDataSource } from '../datasources/MarketLocalDataSource';
 import { MarketStats, OHLC, Token } from '../../core/models';
-import { TokenSymbol, WalletAddress } from '../../core/types';
+import { TokenSymbol } from '../../core/types';
 import { PriceDTO, WatchlistDTO, TokenMetadataDTO } from '../../core/api/MarketDTOs';
 import { cacheEngine } from '../../core/api/CacheEngine';
 import { logger } from '../../utils/logger';

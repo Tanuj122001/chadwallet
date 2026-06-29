@@ -301,7 +301,7 @@ export class SolanaWebSocketManager {
   }
 
   // Generic Solana RPC subscription dispatcher
-  private async subscribeRpc(method: string, params: unknown[], callback: WebSocketCallback): Promise<number> {
+  private async subscribeRpc(method: string, params: unknown[], _callback: WebSocketCallback): Promise<number> {
     return new Promise((resolve) => {
       const requestId = this.requestCounter++;
       this.pendingRequests.set(requestId, resolve);

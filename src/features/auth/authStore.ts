@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { User, Session } from '../../core/models';
 import { serviceLocator } from '../../services';
 import { sessionManager } from '../../services/SessionManager';
-import { logger } from '../../utils/logger';
 import { SessionExpiredError } from '../../core/errors';
 
 export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'refreshing' | 'session_expired' | 'error';

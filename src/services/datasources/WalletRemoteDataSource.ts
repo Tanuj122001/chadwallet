@@ -1,4 +1,3 @@
-import { WalletDTO } from '../../core/api/dtos';
 import { logger } from '../../utils/logger';
 
 export interface IWalletRemoteDataSource {

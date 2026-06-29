@@ -1,4 +1,3 @@
-import { birdeyeApiClient, jupiterApiClient } from '../../core/api/ApiClient';
 import { PriceDTO, ChartDTO, TrendingDTO, TokenMetadataDTO, MarketDTO } from '../../core/api/MarketDTOs';
 import { logger } from '../../utils/logger';
 
