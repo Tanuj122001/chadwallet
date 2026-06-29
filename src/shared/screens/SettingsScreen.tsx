@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { AppHeader } from '../components/AppHeader';
@@ -7,6 +7,7 @@ import { Card } from '../components/Card';
 import { SecondaryButton } from '../components/SecondaryButton';
 import { useAuth } from '../../core/navigation/AuthContext';
 import { colors } from '../theme/colors';
+import { SettingsDetailSheet, SettingsDetailType, ToastManager, toast } from '../components';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
 interface SettingItemProps {
@@ -47,6 +48,13 @@ const SettingItem: React.FC<SettingItemProps> = ({ icon, title, subtitle, rightA
 
 export const SettingsScreen: React.FC = () => {
   const { logout } = useAuth();
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [detailType, setDetailType] = useState<SettingsDetailType>('biometrics');
+
+  const openDetail = (type: SettingsDetailType) => {
+    setDetailType(type);
+    setDetailVisible(true);
+  };
 
   return (
     <ScreenContainer scrollable={false} padding={true}>
@@ -90,6 +98,7 @@ export const SettingsScreen: React.FC = () => {
             icon="shield-halved"
             title="Biometric Protection"
             subtitle="Secure enclave fingerprint lock"
+            onPress={() => openDetail('biometrics')}
             rightAction={
               <AppText variant="caption" color="primary" weight="bold">
                 Enabled
@@ -100,13 +109,13 @@ export const SettingsScreen: React.FC = () => {
             icon="key"
             title="Export Mnemonic Key"
             subtitle="12-word master passphrase recovery"
-            onPress={() => {}}
+            onPress={() => openDetail('backup')}
           />
           <SettingItem
             icon="lock"
             title="Auto Lock Timeout"
             subtitle="Lock screen after 15 minutes"
-            onPress={() => {}}
+            onPress={() => openDetail('autolock')}
           />
         </Card>
 
@@ -119,6 +128,7 @@ export const SettingsScreen: React.FC = () => {
             icon="circle-half-stroke"
             title="Display Color Theme"
             subtitle="Midnight dark / Luxury aesthetic"
+            onPress={() => toast.info('Display Color Theme locked to Midnight Dark.')}
             rightAction={
               <AppText variant="caption" color="secondary" weight="bold">
                 Dark
@@ -129,6 +139,7 @@ export const SettingsScreen: React.FC = () => {
             icon="globe"
             title="Base Fiat Currency"
             subtitle="Display quotes in US Dollar (USD)"
+            onPress={() => openDetail('currency')}
             rightAction={
               <AppText variant="caption" color="secondary" weight="bold">
                 USD
@@ -139,7 +150,7 @@ export const SettingsScreen: React.FC = () => {
             icon="network-wired"
             title="Solana RPC Endpoint"
             subtitle="Helius premium nodes cluster"
-            onPress={() => {}}
+            onPress={() => openDetail('rpc')}
           />
         </Card>
 
@@ -148,6 +159,13 @@ export const SettingsScreen: React.FC = () => {
           <SecondaryButton title="Simulate Sign Out" onPress={logout} />
         </View>
       </ScrollView>
+
+      <SettingsDetailSheet
+        visible={detailVisible}
+        type={detailType}
+        onClose={() => setDetailVisible(false)}
+      />
+      <ToastManager />
     </ScreenContainer>
   );
 };

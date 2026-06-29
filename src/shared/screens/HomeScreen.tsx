@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, FlatList, Alert } from 'react-native';
+import { View, FlatList } from 'react-native';
 import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { MainTabScreenProps } from '../../core/navigation/navigationTypes';
 import {
@@ -11,6 +11,12 @@ import {
   TokenData,
   FloatingActionButton,
   AiCopilotModal,
+  ToastManager,
+  ActionsSheet,
+  FilterSheet,
+  NotificationsSheet,
+  ProfileSheet,
+  toast,
 } from '../components';
 import { colors } from '../theme/colors';
 
@@ -148,25 +154,22 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('trending');
   const [aiVisible, setAiVisible] = useState(false);
+  const [actionsVisible, setActionsVisible] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [notificationsVisible, setNotificationsVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
+  const [_watchlist, setWatchlist] = useState<string[]>([]);
 
   const AlertNotification = () => {
-    Alert.alert(
-      'Alerts & Notifications',
-      'You are all caught up!\n\nNo new price alerts triggered for your watchlist.',
-      [{ text: 'Dismiss' }]
-    );
+    setNotificationsVisible(true);
   };
 
   const handleProfilePress = () => {
-    Alert.alert(
-      'Profile Actions',
-      'Profile settings and preferences simulated here.',
-      [{ text: 'Close' }]
-    );
+    setProfileVisible(true);
   };
 
   const handleWalletActions = () => {
-    setAiVisible(true);
+    setActionsVisible(true);
   };
 
   const filteredTokens = useMemo(() => {
@@ -174,16 +177,33 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
       const matchesSearch = 
         token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         token.symbol.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesSearch;
+      
+      if (!matchesSearch) return false;
+
+      if (selectedFilter === 'gainers') {
+        return token.change24h > 0;
+      }
+      if (selectedFilter === 'losers') {
+        return token.change24h < 0;
+      }
+      if (selectedFilter === 'new') {
+        return token.price < 0.1;
+      }
+      return true;
     });
-  }, [searchQuery]);
+  }, [searchQuery, selectedFilter]);
 
   const handleWatchlistPress = React.useCallback((symbol: string) => {
-    Alert.alert(
-      'Watchlist Actions',
-      `Toggled watchlist state for ${symbol}.`,
-      [{ text: 'OK' }]
-    );
+    setWatchlist(prev => {
+      const exists = prev.includes(symbol);
+      if (exists) {
+        toast.info(`Removed ${symbol} from watchlist.`);
+        return prev.filter(s => s !== symbol);
+      } else {
+        toast.success(`Added ${symbol} to watchlist.`);
+        return [...prev, symbol];
+      }
+    });
   }, []);
 
   const renderHeader = () => (
@@ -202,6 +222,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
           value={searchQuery} 
           onChangeText={setSearchQuery} 
           placeholder="Search tokens" 
+          onFilterPress={() => setFilterVisible(true)}
         />
       </View>
 
@@ -270,6 +291,38 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
       <FloatingActionButton onPress={handleWalletActions} />
 
       <AiCopilotModal visible={aiVisible} onClose={() => setAiVisible(false)} />
+      <ActionsSheet
+        visible={actionsVisible}
+        onClose={() => setActionsVisible(false)}
+        onActionTrigger={(action) => {
+          if (action === 'swap') {
+            toast.success('Swap timeline initialized.');
+          } else if (action === 'send') {
+            toast.info('Enter recipient wallet destination address.');
+          } else {
+            toast.success(`${action} action successfully handled.`);
+          }
+        }}
+      />
+      <FilterSheet
+        visible={filterVisible}
+        onClose={() => setFilterVisible(false)}
+        onApplyFilters={(sort, filters) => {
+          toast.success(`Sorting by ${sort}. Active filters: ${filters.join(', ') || 'None'}`);
+        }}
+      />
+      <NotificationsSheet
+        visible={notificationsVisible}
+        onClose={() => setNotificationsVisible(false)}
+      />
+      <ProfileSheet
+        visible={profileVisible}
+        onClose={() => setProfileVisible(false)}
+        onLogoutPress={() => {
+          toast.info('Sign out wallet simulated.');
+        }}
+      />
+      <ToastManager />
     </ScreenContainer>
   );
 };

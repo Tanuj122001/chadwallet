@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, TouchableOpacity, Alert, Share } from 'react-native';
+import { View, TouchableOpacity, Share, Clipboard } from 'react-native';
 import Svg, { Path, Defs, LinearGradient, Stop, Circle } from 'react-native-svg';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { MainStackScreenProps } from '../../core/navigation/navigationTypes';
@@ -7,7 +7,7 @@ import { ScreenContainer } from '../components/ScreenContainer';
 import { TokenAvatar } from '../components/TokenAvatar';
 import { AppText } from '../components/AppText';
 import { colors } from '../theme/colors';
-import { AiCopilotModal } from '../components/AiCopilotModal';
+import { AiCopilotModal, toast, ToastManager } from '../components';
 
 // Detailed Token structure with extended time filters support
 interface DetailedTokenInfo {
@@ -321,7 +321,7 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
             className="w-10 h-10 rounded-full bg-surface border border-borderAlpha items-center justify-center"
             onPress={() => {
               setIsWatchlisted(!isWatchlisted);
-              Alert.alert('Watchlist', `${tokenInfo.symbol} watchlist state toggled.`);
+              toast.success(`${tokenInfo.symbol} watchlist state updated.`);
             }}
           >
             <FontAwesome6
@@ -426,9 +426,78 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
             })}
           </View>
         </View>
+        {/* 5. Trading cockpit actions panel */}
+        <View className="mb-4 flex-row justify-between">
+          <TouchableOpacity
+            onPress={() => toast.success(`Initiated buy order for ${tokenInfo.symbol}`)}
+            className="w-[30%] h-12 bg-primary rounded-radius-xl justify-center items-center shadow-md"
+            activeOpacity={0.88}
+          >
+            <AppText variant="body" weight="bold" className="text-slate-900">Buy</AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => toast.success(`Initiated sell order for ${tokenInfo.symbol}`)}
+            className="w-[30%] h-12 bg-losses rounded-radius-xl justify-center items-center shadow-md"
+            activeOpacity={0.88}
+          >
+            <AppText variant="body" weight="bold" className="text-white">Sell</AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => toast.success(`Configuring Raydium / Jupiter swap route for ${tokenInfo.symbol}`)}
+            className="w-[30%] h-12 bg-surfaceHover border border-borderAlpha rounded-radius-xl justify-center items-center"
+            activeOpacity={0.88}
+          >
+            <AppText variant="body" weight="bold" color="primary">Swap</AppText>
+          </TouchableOpacity>
+        </View>
+
+        {/* 6. secondary meta utilities */}
+        <View className="mb-10 flex-row justify-between items-center bg-surface border border-borderAlpha rounded-radius-xl p-3">
+          <TouchableOpacity
+            onPress={() => toast.info(`Recipient address set for ${tokenInfo.symbol}`)}
+            className="items-center w-[23%]"
+            activeOpacity={0.88}
+          >
+            <FontAwesome6 name="paper-plane" size={16} color={colors.textSecondary} iconStyle="solid" />
+            <AppText variant="caption" color="secondary" className="mt-1">Send</AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => toast.success(`${tokenInfo.symbol} deposit address copied!`)}
+            className="items-center w-[23%]"
+            activeOpacity={0.88}
+          >
+            <FontAwesome6 name="qrcode" size={16} color={colors.textSecondary} iconStyle="solid" />
+            <AppText variant="caption" color="secondary" className="mt-1">Receive</AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => toast.info('Opening Solscan/SolanaFM transaction node...')}
+            className="items-center w-[23%]"
+            activeOpacity={0.88}
+          >
+            <FontAwesome6 name="compass" size={16} color={colors.textSecondary} iconStyle="solid" />
+            <AppText variant="caption" color="secondary" className="mt-1">Explorer</AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              Clipboard.setString('So11111111111111111111111111111111111111112');
+              toast.success('Contract mint address copied to clipboard!');
+            }}
+            className="items-center w-[23%]"
+            activeOpacity={0.88}
+          >
+            <FontAwesome6 name="copy" size={16} color={colors.textSecondary} iconStyle="solid" />
+            <AppText variant="caption" color="secondary" className="mt-1">Copy Mint</AppText>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <AiCopilotModal visible={aiVisible} onClose={() => setAiVisible(false)} />
+      <ToastManager />
     </ScreenContainer>
   );
 };
