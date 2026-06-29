@@ -1,5 +1,4 @@
 import { SimulationResultDTO, MEVAnalysisDTO, RiskReportDTO } from '../api/SimulationDTOs';
-import { logger } from '../../utils/logger';
 
 // Sub-Engine: Log Parsers & Token Diff Analyzers
 export class SimulationEngineHelper {

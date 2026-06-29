@@ -2,28 +2,28 @@ import React, { useEffect, useRef } from 'react';
 import { View, Animated, StatusBar, StyleSheet } from 'react-native';
 import { AuthStackScreenProps } from '../../core/navigation/navigationTypes';
 import { AppText } from '../components/AppText';
-import { Logo } from '../components/Logo';
+import { colors } from '../theme/colors';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 
 export const SplashScreen: React.FC<AuthStackScreenProps<'Splash'>> = ({ navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.95)).current;
+  const scaleAnim = useRef(new Animated.Value(0.92)).current;
 
   useEffect(() => {
-    // Run parallel animations: fade-in and scale (0.95 to 1.0)
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 1200,
+        duration: 1000,
         useNativeDriver: true,
       }),
-      Animated.timing(scaleAnim, {
+      Animated.spring(scaleAnim, {
         toValue: 1,
-        duration: 1200,
+        friction: 8,
+        tension: 40,
         useNativeDriver: true,
       }),
     ]).start();
 
-    // Auto navigate after 2000ms (fits the 1800-2200ms duration requirement)
     const timer = setTimeout(() => {
       navigation.replace('Login');
     }, 2000);
@@ -43,12 +43,17 @@ export const SplashScreen: React.FC<AuthStackScreenProps<'Splash'>> = ({ navigat
           },
         ]}
       >
-        {/* Brand new Logo component utilizing the founder asset */}
-        <Logo variant="dark" size={100} />
+        {/* Glowing luxury logo mark */}
+        <View style={styles.logoGlow} className="w-24 h-24 bg-primary items-center justify-center rounded-3xl shadow-lg">
+          <FontAwesome6 name="wallet" size={40} color="#080A0C" iconStyle="solid" />
+        </View>
 
-        {/* Brand name wordmark */}
-        <AppText variant="h2" weight="bold" className="text-white tracking-[0.25em] mt-8 text-center font-mono">
+        {/* Wordmark */}
+        <AppText variant="h1" weight="bold" className="text-white tracking-[0.25em] mt-8 text-center font-mono">
           CHADWALLET
+        </AppText>
+        <AppText variant="caption" color="secondary" align="center" className="mt-2 tracking-wide">
+          DEFI INSTIGATORS NETWORK
         </AppText>
       </Animated.View>
     </View>
@@ -58,13 +63,20 @@ export const SplashScreen: React.FC<AuthStackScreenProps<'Splash'>> = ({ navigat
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
+    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
   animationWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  logoGlow: {
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 8,
   },
 });
 

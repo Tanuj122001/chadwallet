@@ -1,4 +1,4 @@
-import { AutomationRuleDTO, AutomationHistoryDTO, AutomationActionType } from '../api/AutomationDTOs';
+import { AutomationRuleDTO, AutomationHistoryDTO } from '../api/AutomationDTOs';
 import { serviceLocator } from '../../services';
 import { logger } from '../../utils/logger';
 import { eventEngine } from './EventEngine';

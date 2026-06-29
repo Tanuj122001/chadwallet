@@ -25,8 +25,8 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={isInteractionDisabled}
-      activeOpacity={0.8}
-      className={`w-full flex-row items-center justify-center h-12 bg-primary rounded-radius-md px-space-lg ${
+      activeOpacity={0.88}
+      className={`w-full flex-row items-center justify-center h-12 bg-primary rounded-radius-xl px-space-lg shadow-md ${
         isInteractionDisabled ? 'opacity-50' : 'active:bg-primaryHover'
       } ${className}`}
       accessibilityRole="button"
@@ -37,7 +37,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       ) : (
         <View className="flex-row items-center justify-center">
           {icon && <View className="mr-space-sm">{icon}</View>}
-          <AppText variant="body" weight="bold" className="text-background">
+          <AppText variant="body" weight="bold" className="text-slate-900">
             {title}
           </AppText>
         </View>

@@ -1,12 +1,8 @@
 import { 
   AssetAllocationDTO, 
   PnLMetricsDTO, 
-  PerformanceMetricsDTO, 
-  RiskInsightsDTO, 
   PortfolioSnapshotDTO, 
-  PortfolioAnalyticsDTO 
 } from '../api/PortfolioAnalyticsDTOs';
-import { logger } from '../../utils/logger';
 import { ValidationError } from '../errors';
 
 // 1. Sector Definitions & Asset Classifications

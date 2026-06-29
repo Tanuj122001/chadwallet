@@ -1,4 +1,4 @@
-import { ExecutionDTO, ReceiptDTO, ConfirmationDTO } from '../api/ExecutionDTOs';
+import { ExecutionDTO } from '../api/ExecutionDTOs';
 import { TransactionDTO } from '../api/TransactionDTOs';
 import { walletEngine, WalletEncryptionManager } from './WalletEngine';
 import { localStorage } from '../storage';

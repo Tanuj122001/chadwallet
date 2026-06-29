@@ -6,6 +6,7 @@ import { MainStackScreenProps } from '../../core/navigation/navigationTypes';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { TokenAvatar } from '../components/TokenAvatar';
 import { AppText } from '../components/AppText';
+import { colors } from '../theme/colors';
 
 // Detailed Token structure with extended time filters support
 interface DetailedTokenInfo {
@@ -277,26 +278,25 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
     <ScreenContainer scrollable={true} padding={false}>
       {/* 1. Large Token Header */}
       <View
-        className="flex-row items-center justify-between h-[72px] px-5 bg-transparent border-b border-[#2A2D39]/30"
+        className="flex-row items-center justify-between h-[72px] px-5 bg-transparent border-b border-borderAlpha"
         style={{ minHeight: 72 }}
       >
         <View className="flex-row items-center flex-1">
           {/* Back action button */}
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            className="mr-3"
-            activeOpacity={0.7}
+            className="mr-3 p-2 bg-surfaceHover rounded-xl items-center justify-center"
+            activeOpacity={0.88}
             accessibilityLabel="Go back"
             accessibilityRole="button"
           >
-
+            <FontAwesome6
+              name="chevron-left"
+              size={18}
+              color={colors.text}
+              iconStyle="solid"
+            />
           </TouchableOpacity>
-          <FontAwesome6
-            name="chevron-left"
-            size={24}
-            color="#FFFFFF"
-            iconStyle="solid"
-          />
           {/* Token Avatar in header */}
           <TokenAvatar symbol={tokenInfo.symbol} size={36} className="mr-3" />
 
@@ -305,7 +305,7 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
             <AppText className="text-white text-[18px] font-bold" numberOfLines={1}>
               {tokenInfo.name}
             </AppText>
-            <AppText className="text-[#8D94A7] text-[13px] font-medium mt-0.5">
+            <AppText className="text-textSecondary text-[13px] font-medium mt-0.5">
               {tokenInfo.symbol}
             </AppText>
           </View>
@@ -315,8 +315,8 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
         <View className="flex-row items-center gap-x-3">
           {/* Favourite watchlist star outline */}
           <TouchableOpacity
-            activeOpacity={0.8}
-            className="w-10 h-10 rounded-full bg-[#1B1D25] border border-[#2A2D39] items-center justify-center"
+            activeOpacity={0.88}
+            className="w-10 h-10 rounded-full bg-surface border border-borderAlpha items-center justify-center"
             onPress={() => {
               setIsWatchlisted(!isWatchlisted);
               Alert.alert('Watchlist', `${tokenInfo.symbol} watchlist state toggled.`);
@@ -324,22 +324,22 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
           >
             <FontAwesome6
               name="star"
-              size={20}
-              color={isWatchlisted ? '#22F27C' : '#FFFFFF'}
+              size={18}
+              color={isWatchlisted ? colors.primary : colors.text}
               iconStyle={isWatchlisted ? 'solid' : 'regular'}
             />
           </TouchableOpacity>
 
           {/* Share button */}
           <TouchableOpacity
-            activeOpacity={0.8}
-            className="w-10 h-10 rounded-full bg-[#1B1D25] border border-[#2A2D39] items-center justify-center"
+            activeOpacity={0.88}
+            className="w-10 h-10 rounded-full bg-surface border border-borderAlpha items-center justify-center"
             onPress={handleShare}
           >
             <FontAwesome6
               name="share-nodes"
-              size={20}
-              color="#FFFFFF"
+              size={18}
+              color={colors.text}
               iconStyle="solid"
             />
           </TouchableOpacity>
@@ -353,7 +353,7 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
             ${tokenInfo.price >= 1 ? tokenInfo.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : tokenInfo.price.toFixed(6)}
           </AppText>
           <View className="flex-row items-center mt-2">
-            <View className={`px-2 py-0.5 rounded-md ${isPositive ? 'bg-[#22F27C]/10 border border-[#22F27C]/20' : 'bg-[#FF5C5C]/10 border border-[#FF5C5C]/20'}`}>
+            <View className={`px-2 py-0.5 rounded-md ${isPositive ? 'bg-gains/10 border border-gains/20' : 'bg-losses/10 border border-losses/20'}`}>
               <AppText className="text-[13px] font-bold" style={{ color: performanceColor }}>
                 {isPositive ? '▲' : '▼'} {isPositive ? '+' : ''}{tokenInfo.change24h}% Today
               </AppText>
@@ -362,46 +362,46 @@ export const TokenDetailsScreen: React.FC<MainStackScreenProps<'TokenDetails'>> 
         </View>
 
         {/* 3. Small Statistics Grid */}
-        <View className="flex-row justify-between mb-5 mt-2 bg-[#16171F] border border-[#2A2D39] rounded-[20px] p-4">
+        <View className="flex-row justify-between mb-5 mt-2 bg-surface border border-borderAlpha rounded-radius-2xl p-4">
           <View>
-            <AppText className="text-[#5D6473] text-[11px] font-medium">High</AppText>
+            <AppText className="text-textMuted text-[11px] font-medium">High</AppText>
             <AppText className="text-white text-[13px] font-semibold mt-0.5">${tokenInfo.high}</AppText>
           </View>
           <View>
-            <AppText className="text-[#5D6473] text-[11px] font-medium">Low</AppText>
+            <AppText className="text-textMuted text-[11px] font-medium">Low</AppText>
             <AppText className="text-white text-[13px] font-semibold mt-0.5">${tokenInfo.low}</AppText>
           </View>
           <View>
-            <AppText className="text-[#5D6473] text-[11px] font-medium">Volume</AppText>
+            <AppText className="text-textMuted text-[11px] font-medium">Volume</AppText>
             <AppText className="text-white text-[13px] font-semibold mt-0.5">${tokenInfo.volume24h}</AppText>
           </View>
           <View>
-            <AppText className="text-[#5D6473] text-[11px] font-medium">Market Cap</AppText>
+            <AppText className="text-textMuted text-[11px] font-medium">Market Cap</AppText>
             <AppText className="text-white text-[13px] font-semibold mt-0.5">${tokenInfo.marketCap}</AppText>
           </View>
         </View>
 
         {/* 4. Large Interactive Chart Container */}
-        <View className="bg-[#16171F] border border-[#2A2D39] rounded-[22px] p-4 h-[320px] justify-between mb-10">
+        <View className="bg-surface border border-borderAlpha rounded-radius-2xl p-4 h-[320px] justify-between mb-10">
           <View className="flex-1 justify-center">
             {chartSVG}
           </View>
 
           {/* Time Filter Chips */}
-          <View className="flex-row justify-between mt-2 pt-2 border-t border-[#2A2D39]/30">
+          <View className="flex-row justify-between mt-2 pt-2 border-t border-borderAlpha">
             {(['1H', '4H', '1D', '1W', '1M', '1Y', 'ALL'] as const).map(filter => {
               const isSelected = selectedFilter === filter;
               return (
                 <TouchableOpacity
                   key={filter}
                   onPress={() => setSelectedFilter(filter)}
-                  className={`items-center justify-center px-3 h-[34px] rounded-full ${isSelected ? 'bg-[#22F27C]' : 'bg-[#1B1D25] border border-[#2A2D39]/50'
+                  className={`items-center justify-center px-3 h-[34px] rounded-full ${isSelected ? 'bg-primary' : 'bg-surfaceHover border border-borderAlpha'
                     }`}
-                  activeOpacity={0.8}
+                  activeOpacity={0.88}
                 >
                   <AppText
                     className="text-[12px] font-bold"
-                    style={{ color: isSelected ? '#000000' : '#FFFFFF' }}
+                    style={{ color: isSelected ? '#080A0C' : colors.text }}
                   >
                     {filter}
                   </AppText>

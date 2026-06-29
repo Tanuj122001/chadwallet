@@ -1,4 +1,3 @@
-import { logger } from '../../utils/logger';
 import { MarketDTO, TokenMetadataDTO } from '../api/MarketDTOs';
 
 // Sub-Engine: Price Engine & Price Formatter

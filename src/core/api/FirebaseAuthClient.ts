@@ -15,7 +15,7 @@ export interface IFirebaseAuthClient {
 
 class FirebaseAuthClient implements IFirebaseAuthClient {
   
-  public async signUpWithEmail(email: string, password: string): Promise<AuthDTO> {
+  public async signUpWithEmail(email: string, _password: string): Promise<AuthDTO> {
     logger.info(`[FirebaseAuthClient] Registering user with email: ${email}`);
     
     // Simulate network latency

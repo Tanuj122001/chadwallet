@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Svg, { Path, Defs, LinearGradient, Stop, Line, Circle } from 'react-native-svg';
 import { AppText } from './AppText';
+import { colors } from '../theme/colors';
 
 export interface ChartCardProps {
   data: number[];
@@ -35,7 +36,16 @@ export const ChartCard: React.FC<ChartCardProps> = ({
     return { x, y };
   });
 
-  const pathData = `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
+  // Calculate smooth Bezier Curve points instead of sharp corners
+  let pathData = `M ${points[0].x},${points[0].y}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const cpX1 = points[i].x + (points[i + 1].x - points[i].x) / 2;
+    const cpY1 = points[i].y;
+    const cpX2 = points[i].x + (points[i + 1].x - points[i].x) / 2;
+    const cpY2 = points[i + 1].y;
+    pathData += ` C ${cpX1},${cpY1} ${cpX2},${cpY2} ${points[i + 1].x},${points[i + 1].y}`;
+  }
+
   const areaData = `${pathData} L ${width},${height} L 0,${height} Z`;
 
   return (
@@ -47,7 +57,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
         </AppText>
         
         {/* Filter buttons */}
-        <View className="flex-row gap-x-1.5 bg-surface border border-border rounded-radius-full p-1">
+        <View className="flex-row gap-x-1.5 bg-surface border border-borderAlpha rounded-radius-full p-1">
           {(['1H', '24H', '7D', '30D'] as const).map(filter => {
             const isActive = selectedFilter === filter;
             return (
@@ -55,12 +65,12 @@ export const ChartCard: React.FC<ChartCardProps> = ({
                 key={filter}
                 onPress={() => onFilterChange(filter)}
                 className={`px-3 py-1 rounded-radius-full ${isActive ? 'bg-primary' : 'bg-transparent'}`}
-                activeOpacity={0.8}
+                activeOpacity={0.88}
               >
                 <AppText
                   variant="caption"
                   weight="bold"
-                  className={isActive ? 'text-background' : 'text-textSecondary'}
+                  className={isActive ? 'text-slate-900' : 'text-textSecondary'}
                 >
                   {filter}
                 </AppText>
@@ -70,9 +80,9 @@ export const ChartCard: React.FC<ChartCardProps> = ({
         </View>
       </View>
 
-      {/* SVG Chart */}
-      <View style={{ width: '100%', height }} className="bg-surface border border-border rounded-radius-lg overflow-hidden justify-center items-center">
-        <Svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`}>
+      {/* SVG Chart Container */}
+      <View style={{ width: '100%', height }} className="bg-surface border border-borderAlpha rounded-radius-2xl overflow-hidden justify-center items-center">
+        <Svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} accessibilityLabel="Interactive Bezier price movement chart">
           <Defs>
             <LinearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
               <Stop offset="0%" stopColor={color} stopOpacity={0.25} />
@@ -90,7 +100,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
                 y1={y}
                 x2={width}
                 y2={y}
-                stroke="#1F262E"
+                stroke={colors.borderAlpha}
                 strokeWidth={1}
                 strokeDasharray="4 4"
               />
@@ -100,7 +110,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
           {/* Gradient fill */}
           <Path d={areaData} fill="url(#chartGradient)" />
 
-          {/* Line plot */}
+          {/* Bezier Line plot */}
           <Path
             d={pathData}
             fill="none"
@@ -110,7 +120,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({
             strokeLinejoin="round"
           />
 
-          {/* Highlight the latest price point */}
+          {/* Highlight latest price spot */}
           {points.map((p, index) => {
             if (index === points.length - 1) {
               return (

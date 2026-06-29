@@ -1,5 +1,4 @@
-import { SwapDTO, SwapPreparedTransactionDTO, SwapInstructionDTO, SimulationDTO } from '../api/SwapDTOs';
-import { logger } from '../../utils/logger';
+import { SwapPreparedTransactionDTO } from '../api/SwapDTOs';
 
 // Sub-Engine: Swap Validator & Program ID Sanitizer
 export class SwapValidator {

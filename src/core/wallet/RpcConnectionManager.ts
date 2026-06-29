@@ -83,11 +83,9 @@ class RpcConnectionManager {
     
     // Find next healthy index
     let nextIndex = (currentIndex + 1) % list.length;
-    let foundHealthy = false;
 
     for (let i = 0; i < list.length; i++) {
       if (list[nextIndex]!.isHealthy) {
-        foundHealthy = true;
         break;
       }
       nextIndex = (nextIndex + 1) % list.length;

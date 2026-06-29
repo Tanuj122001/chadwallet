@@ -25,8 +25,8 @@ export const SecondaryButton: React.FC<SecondaryButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={isInteractionDisabled}
-      activeOpacity={0.8}
-      className={`w-full flex-row items-center justify-center h-12 bg-transparent border border-border rounded-radius-md px-space-lg ${
+      activeOpacity={0.88}
+      className={`w-full flex-row items-center justify-center h-12 bg-surface/40 border border-borderAlpha rounded-radius-xl px-space-lg ${
         isInteractionDisabled ? 'opacity-40' : 'active:bg-surface'
       } ${className}`}
       accessibilityRole="button"

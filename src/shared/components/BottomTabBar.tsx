@@ -3,6 +3,8 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabItem } from './BottomTabItem';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import { colors } from '../theme/colors';
+import { shadows } from '../theme/shadows';
 
 export interface BottomTabBarProps {
   activeTab: string;
@@ -20,11 +22,11 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
   return (
     <View
       style={{
-        height: 82 + insets.bottom,
+        height: 74 + insets.bottom,
         paddingBottom: insets.bottom,
         borderTopWidth: 1,
-        borderTopColor: '#2A2D39',
-        backgroundColor: '#111217',
+        borderTopColor: colors.borderAlpha,
+        backgroundColor: colors.surface,
         shadowOpacity: 0,
         elevation: 0,
       }}
@@ -35,8 +37,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
         icon={
           <FontAwesome6
             name="house"
-            size={22}
-            color="#FFFFFF"
+            size={20}
+            color={colors.text}
             iconStyle="solid"
           />
         }
@@ -48,8 +50,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
         icon={
           <FontAwesome6
             name="magnifying-glass"
-            size={22}
-            color="#FFFFFF"
+            size={20}
+            color={colors.text}
             iconStyle="solid"
           />
         }
@@ -59,17 +61,17 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
 
       {/* Center larger floating circular green button */}
       <TouchableOpacity
-        activeOpacity={0.95}
+        activeOpacity={0.88}
         style={styles.centerButton}
-        className="bg-[#22F27C] items-center justify-center rounded-full"
+        className="bg-primary items-center justify-center rounded-full"
         onPress={() => onTabPress('Plus')}
         accessibilityLabel="Action Menu"
         accessibilityRole="button"
       >
         <FontAwesome6
           name="plus"
-          size={28}
-          color="#000000"
+          size={24}
+          color="#080A0C"
           iconStyle="solid"
         />
       </TouchableOpacity>
@@ -79,8 +81,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
         icon={
           <FontAwesome6
             name="briefcase"
-            size={22}
-            color="#FFFFFF"
+            size={20}
+            color={colors.text}
             iconStyle="solid"
           />
         }
@@ -92,8 +94,8 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
         icon={
           <FontAwesome6
             name="gear"
-            size={22}
-            color="#FFFFFF"
+            size={20}
+            color={colors.text}
             iconStyle="solid"
           />
         }
@@ -106,14 +108,10 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = React.memo(({
 
 const styles = StyleSheet.create({
   centerButton: {
-    width: 60,
-    height: 60,
+    width: 56,
+    height: 56,
     marginTop: -28,
-    shadowColor: '#22F27C',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 3,
+    ...shadows.glowGreen,
   },
 });
 

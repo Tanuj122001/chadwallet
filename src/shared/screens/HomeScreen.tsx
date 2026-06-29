@@ -11,6 +11,7 @@ import {
   TokenData,
   FloatingActionButton,
 } from '../components';
+import { colors } from '../theme/colors';
 
 const filterChips = [
   { id: 'trending', label: 'Trending' },
@@ -244,8 +245,8 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
         <Svg width="100%" height={150} viewBox="0 0 375 150">
           <Defs>
             <RadialGradient id="radial-glow" cx="50%" cy="0%" r="60%">
-              <Stop offset="0%" stopColor="#22F27C" stopOpacity={0.15} />
-              <Stop offset="100%" stopColor="#000000" stopOpacity={0} />
+              <Stop offset="0%" stopColor={colors.primary} stopOpacity={0.15} />
+              <Stop offset="100%" stopColor={colors.background} stopOpacity={0} />
             </RadialGradient>
           </Defs>
           <Rect width="100%" height={150} fill="url(#radial-glow)" />

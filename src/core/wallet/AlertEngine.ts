@@ -1,4 +1,4 @@
-import { AlertDTO, AlertRuleDTO, AlertSeverity, AlertType } from '../api/AlertDTOs';
+import { AlertDTO, AlertRuleDTO, AlertType } from '../api/AlertDTOs';
 import { serviceLocator } from '../../services';
 import { logger } from '../../utils/logger';
 import { eventEngine } from './EventEngine';

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { ApiResponse, ApiError, MetadataResponse } from './contracts';
+import { ApiResponse, MetadataResponse } from './contracts';
 import { ValidationError, ApiError as CustomApiError } from '../errors';
 import { logger } from '../../utils/logger';
 

@@ -1,6 +1,5 @@
 import nacl from 'tweetnacl';
 import { Buffer } from 'buffer';
-import { logger } from '../../utils/logger';
 
 // Standard BIP39 English wordlist extract (subset of 128 words for production architecture, normally 2048 words)
 // To keep file size optimized and compile fast, we construct a compact BIP39 compliant dictionary.

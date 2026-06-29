@@ -1,3 +1,4 @@
+/* eslint-env jest */
 /**
  * Phase 16 Test Suite — Production Integrations, Exchange Connectivity, Fiat On/Off Ramp & Global Release
  *

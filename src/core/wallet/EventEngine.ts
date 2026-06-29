@@ -1,4 +1,4 @@
-import { EventDTO, EventPriority, EventStatus } from '../api/EventDTOs';
+import { EventDTO, EventPriority } from '../api/EventDTOs';
 import { serviceLocator } from '../../services';
 import { logger } from '../../utils/logger';
 import { featureFlagsManager } from '../api/FeatureFlags';

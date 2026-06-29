@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
+import { colors } from '../theme/colors';
 
 export interface SearchBarProps {
   value: string;
@@ -19,21 +20,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   return (
     <View
-      className={`flex-row items-center bg-[#15161F] border border-[#2A2D39] rounded-[26px] h-[52px] px-4 ${className}`}
+      className={`flex-row items-center bg-surface border border-borderAlpha rounded-radius-full h-12 px-4 shadow-sm ${className}`}
       style={{ shadowOpacity: 0, elevation: 0 }}
     >
       {/* Search Icon */}
       <FontAwesome6
         name="magnifying-glass"
-        size={18}
-        color="#6F7582"
+        size={16}
+        color={colors.textMuted}
         iconStyle="solid"
       />
 
       <TextInput
         className="flex-1 text-white text-[14px] font-medium h-full py-0 ml-3"
         placeholder={placeholder}
-        placeholderTextColor="#6F7582"
+        placeholderTextColor={colors.textMuted}
         value={value}
         onChangeText={onChangeText}
         autoCorrect={false}
@@ -43,8 +44,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
       {/* Filter Button */}
       <TouchableOpacity
-        activeOpacity={0.8}
-        className="w-8 h-8 rounded-full bg-[#1B1D25] border border-[#2A2D39] items-center justify-center ml-2"
+        activeOpacity={0.88}
+        className="w-8 h-8 rounded-full bg-surfaceHover border border-borderAlpha items-center justify-center ml-2"
         onPress={onFilterPress}
         accessibilityLabel="Filter"
         accessibilityRole="button"
@@ -52,7 +53,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <FontAwesome6
           name="sliders"
           size={14}
-          color="#FFFFFF"
+          color={colors.text}
           iconStyle="solid"
         />
       </TouchableOpacity>
