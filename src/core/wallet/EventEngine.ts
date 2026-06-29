@@ -96,7 +96,7 @@ export class EventEngine {
           // Re-queue delayed event
           this.eventQueue.push(event);
           // Yield to prevent infinite loop
-          await new Promise(r => setTimeout(r, 10));
+          await new Promise(r => setTimeout(() => r(undefined), 10));
           continue;
         }
 

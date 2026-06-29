@@ -57,7 +57,7 @@ describe('Event, Alert, and Automation System Tests', () => {
         timestamp: Date.now(),
       });
 
-      await new Promise(r => setTimeout(r, 20));
+      await new Promise(r => setTimeout(() => r(undefined), 20));
 
       expect(received).toHaveLength(1);
       expect(received[0].event_id).toBe('evt_1');
@@ -90,7 +90,7 @@ describe('Event, Alert, and Automation System Tests', () => {
         timestamp: Date.now(),
       });
 
-      await new Promise(r => setTimeout(r, 20));
+      await new Promise(r => setTimeout(() => r(undefined), 20));
 
       expect(received).toHaveLength(1);
       unsub();
@@ -200,7 +200,7 @@ describe('Event, Alert, and Automation System Tests', () => {
         counterparty: 'recipient_wallet_addr',
       });
 
-      await new Promise(r => setTimeout(r, 20));
+      await new Promise(r => setTimeout(() => r(undefined), 20));
 
       const events = await eventEngine.getHistory();
       const txEvents = events.filter(e => e.topic === 'chain_transactions');
@@ -265,7 +265,7 @@ describe('Event, Alert, and Automation System Tests', () => {
       expect(backgroundSyncEngine.getRetryQueueLength()).toBe(1);
 
       backgroundSyncEngine.setConnectionState(true); // Online -> triggers flush
-      await new Promise(r => setTimeout(r, 10)); // Yield thread
+      await new Promise(r => setTimeout(() => r(undefined), 10)); // Yield thread
 
       expect(syncCalled).toBe(true);
       expect(backgroundSyncEngine.getRetryQueueLength()).toBe(0);

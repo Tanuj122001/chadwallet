@@ -4,25 +4,25 @@ import { AutomationRuleDTO } from '../../core/api/AutomationDTOs';
 
 export class EventRemoteDataSource {
   // Simulates remote syncing. Returns true if sync succeeds.
-  public async syncEvents(events: EventDTO[]): Promise<boolean> {
+  public async syncEvents(_events: EventDTO[]): Promise<boolean> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(true), 50);
     });
   }
 
-  public async syncAlerts(alerts: AlertDTO[]): Promise<boolean> {
+  public async syncAlerts(_alerts: AlertDTO[]): Promise<boolean> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(true), 50);
     });
   }
 
-  public async syncAlertRules(rules: AlertRuleDTO[]): Promise<boolean> {
+  public async syncAlertRules(_rules: AlertRuleDTO[]): Promise<boolean> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(true), 50);
     });
   }
 
-  public async syncAutomationRules(rules: AutomationRuleDTO[]): Promise<boolean> {
+  public async syncAutomationRules(_rules: AutomationRuleDTO[]): Promise<boolean> {
     return new Promise((resolve) => {
       setTimeout(() => resolve(true), 50);
     });
