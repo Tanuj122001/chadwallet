@@ -6,4 +6,7 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|react-native-reanimated)/)',
   ],
+  setupFiles: [
+    './jest.setup.js',
+  ],
 };

@@ -5,6 +5,7 @@ import { PortfolioAnalyticsDTO, PortfolioSnapshotDTO } from '../../core/api/Port
 import { featureFlagsManager } from '../../core/api/FeatureFlags';
 import { logger } from '../../utils/logger';
 import { RepositoryError } from '../../core/errors';
+import { PortfolioAnalyticsMapper } from '../../core/api/PortfolioAnalyticsMapper';
 
 export class PortfolioAnalyticsRepository implements IPortfolioAnalyticsRepository {
   constructor(
@@ -17,7 +18,7 @@ export class PortfolioAnalyticsRepository implements IPortfolioAnalyticsReposito
       throw new RepositoryError('PORTFOLIO_ANALYTICS_DISABLED', 'Portfolio analytics feature is currently disabled.');
     }
 
-    // 1. Resolve local cache map first
+    // 1. Resolve local cache map first if not forcing refresh
     if (!forceRefresh) {
       const cached = await this.localDS.getCachedAnalytics(address);
       if (cached) {
@@ -27,8 +28,49 @@ export class PortfolioAnalyticsRepository implements IPortfolioAnalyticsReposito
     }
 
     try {
-      // 2. Query remote statistics
-      const data = await this.remoteDS.fetchPortfolioAnalytics(address);
+      logger.debug(`[PortfolioAnalyticsRepository] Fetching live data for calculation: ${address}`);
+      
+      // Lazily resolve serviceLocator to prevent circular evaluation errors
+      const { serviceLocator } = require('../index');
+      const solanaRepo = serviceLocator.getSolanaRepository();
+      const marketRepo = serviceLocator.getMarketRepository();
+
+      // 2. Fetch raw blockchain state
+      const [nativeBalance, tokenHoldings, txHistory] = await Promise.all([
+        solanaRepo.getNativeBalance(address),
+        solanaRepo.getTokenHoldings(address),
+        solanaRepo.getTransactionHistory(address, 50),
+      ]);
+
+      // 3. Assemble holdings list (incorporate native SOL)
+      const holdings = [
+        {
+          mint: 'So11111111111111111111111111111111111111112',
+          balance: nativeBalance,
+          name: 'Solana',
+          symbol: 'SOL',
+        },
+        ...tokenHoldings.map((t: any) => ({
+          mint: t.mint,
+          balance: t.balance,
+          name: t.name,
+          symbol: t.symbol,
+        })),
+      ];
+
+      // 4. Fetch market pricing information
+      const mints = holdings.map(h => h.mint);
+      const prices = await marketRepo.getPrices(mints);
+
+      // 5. Build DTO using the mapping math engine
+      const data = PortfolioAnalyticsMapper.mapToDTO({
+        address,
+        holdings,
+        prices,
+        transactions: txHistory,
+      });
+
+      // 6. Cache locally
       await this.localDS.saveAnalytics(address, data);
       return data;
     } catch (e: any) {
