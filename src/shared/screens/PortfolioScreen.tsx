@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { AppHeader } from '../components/AppHeader';
 import { AppText } from '../components/AppText';
@@ -12,6 +13,7 @@ import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import Svg, { Path, Circle } from 'react-native-svg';
 
 export const PortfolioScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
   const { portfolio, loadingState, fetchPortfolio } = usePortfolioStore();
   const { insights, fetchBatchAnalysis } = useAIStore();
 
@@ -119,7 +121,19 @@ export const PortfolioScreen: React.FC = () => {
         </AppText>
         <Card className="mb-space-lg p-0 px-space-md">
           {holdings.map((h, i) => (
-            <View key={i} className="flex-row items-center justify-between py-4 border-b border-borderAlpha last:border-b-0">
+            <TouchableOpacity
+              key={i}
+              onPress={() => {
+                navigation.navigate('TokenDetails', { 
+                  tokenId: h.token.symbol,
+                  symbol: h.token.symbol,
+                  name: h.token.name,
+                  price: h.balanceUsd / h.amount
+                });
+              }}
+              activeOpacity={0.88}
+              className="flex-row items-center justify-between py-4 border-b border-borderAlpha last:border-b-0"
+            >
               <View className="flex-row items-center">
                 <View className="w-10 h-10 bg-surfaceHover items-center justify-center rounded-xl mr-3">
                   <AppText variant="body" weight="bold" color="primary">
@@ -143,7 +157,7 @@ export const PortfolioScreen: React.FC = () => {
                   {h.change24h >= 0 ? '+' : ''}{h.change24h}%
                 </AppText>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </Card>
 

@@ -147,6 +147,17 @@ export const SettingsScreen: React.FC = () => {
             }
           />
           <SettingItem
+            icon="language"
+            title="App Language"
+            subtitle="Default application display language"
+            onPress={() => openDetail('language')}
+            rightAction={
+              <AppText variant="caption" color="secondary" weight="bold">
+                English
+              </AppText>
+            }
+          />
+          <SettingItem
             icon="network-wired"
             title="Solana RPC Endpoint"
             subtitle="Helius premium nodes cluster"

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Modal, TouchableOpacity, StyleSheet, Clipboard } from 'react-native';
+import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { AppText } from './AppText';
 import { Card } from './Card';
 import { colors } from '../theme/colors';

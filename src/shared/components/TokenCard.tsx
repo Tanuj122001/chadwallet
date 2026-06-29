@@ -23,6 +23,7 @@ export interface TokenCardProps {
   item: TokenData;
   onPress: () => void;
   onWatchlistPress?: () => void;
+  isWatchlisted?: boolean;
   className?: string;
 }
 
@@ -30,6 +31,7 @@ export const TokenCard: React.FC<TokenCardProps> = React.memo(({
   item,
   onPress,
   onWatchlistPress = () => { },
+  isWatchlisted = false,
   className = '',
 }) => {
   const isPositive = item.change24h >= 0;
@@ -90,15 +92,15 @@ export const TokenCard: React.FC<TokenCardProps> = React.memo(({
 
       {/* Top Right Corner Watchlist Star */}
       <TouchableOpacity
-        className="absolute top-[18px] right-[18px]"
+        className="absolute top-[18px] right-[18px] p-1"
         onPress={onWatchlistPress}
         activeOpacity={0.7}
       >
         <FontAwesome6
           name="star"
           size={16}
-          color="#8D94A7"
-          iconStyle="regular"
+          color={isWatchlisted ? '#22F27C' : '#8D94A7'}
+          iconStyle={isWatchlisted ? 'solid' : 'regular'}
         />
       </TouchableOpacity>
     </Card>

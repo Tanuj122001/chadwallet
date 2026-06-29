@@ -3,7 +3,7 @@ import { AIConversationDTO } from '../../core/api/AIDTOs';
 import { AIInsightDTO, AIPredictionDTO } from '../../core/api/AIInsightDTOs';
 import { AIRecommendationDTO } from '../../core/api/AIRecommendationDTOs';
 import { serviceLocator } from '../../services';
-import { aiCopilot, AIHistoryManager, AIFeedbackManager } from '../../core/wallet/AIEngine';
+import { aiCopilot, AIHistoryManager, AIFeedbackManager, AIConversationManager } from '../../core/wallet/AIEngine';
 
 export interface AIStoreState {
   insights: AIInsightDTO[];
@@ -74,8 +74,11 @@ export const useAIStore = create<AIStoreState>((set, _get) => ({
   },
 
   askCopilot: async (conversationId, prompt, walletAddress) => {
-    set({ loading: true, error: null });
     try {
+      const currentConv = _get().activeConversation || await AIHistoryManager.fetchConversation(conversationId);
+      const updatedWithUser = AIConversationManager.appendMessage(currentConv, 'user', prompt, 'current');
+      set({ activeConversation: updatedWithUser, loading: true, error: null });
+
       await aiCopilot.askCopilot(conversationId, prompt, walletAddress);
       
       // Refresh local active conversation state

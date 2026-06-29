@@ -21,6 +21,7 @@ export const AiCopilotModal: React.FC<AiCopilotModalProps> = ({ visible, onClose
   const { activeConversation, askCopilot, fetchConversation, loading } = useAIStore();
   const [input, setInput] = useState('');
   const conversationId = 'conv_release_candidate_default';
+  const scrollViewRef = React.useRef<ScrollView>(null);
 
   useEffect(() => {
     if (visible) {
@@ -34,14 +35,16 @@ export const AiCopilotModal: React.FC<AiCopilotModalProps> = ({ visible, onClose
     await askCopilot(conversationId, textToSend, '9xQ3Z2W6h8U7P7r5e6F4t6r8P7Q7e5F6t6r8P7Q7e5');
   };
 
-  const messages = activeConversation?.messages || [
-    {
-      message_id: 'welcome',
-      role: 'assistant' as const,
-      content: 'Welcome to ChadWallet Copilot node. Ask me anything about Solana liquidity pools, MEV risk protective rules, or sector asset configurations.',
-      timestamp: Date.now(),
-    },
-  ];
+  const messages = activeConversation && activeConversation.messages.length > 0
+    ? activeConversation.messages
+    : [
+        {
+          message_id: 'welcome',
+          role: 'assistant' as const,
+          content: 'Welcome to ChadWallet Copilot node. Ask me anything about Solana liquidity pools, MEV risk protective rules, or sector asset configurations.',
+          timestamp: Date.now(),
+        },
+      ];
 
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
@@ -71,7 +74,12 @@ export const AiCopilotModal: React.FC<AiCopilotModalProps> = ({ visible, onClose
           </View>
 
           {/* Chat area */}
-          <ScrollView className="flex-1 px-5 py-4" contentContainerStyle={{ paddingBottom: 24 }}>
+          <ScrollView
+            ref={scrollViewRef}
+            className="flex-1 px-5 py-4"
+            contentContainerStyle={{ paddingBottom: 24 }}
+            onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+          >
             {messages.map((msg, index) => {
               const isUser = msg.role === 'user';
               return (

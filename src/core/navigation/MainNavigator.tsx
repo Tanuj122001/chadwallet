@@ -12,27 +12,30 @@ import { useUiStore } from '../../features/uiStore';
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
+const CustomTabBar = (props: any) => {
+  const activeRouteName = props.state.routeNames[props.state.index];
+  return (
+    <BottomTabBar 
+      activeTab={activeRouteName}
+      onTabPress={(tab: string) => {
+        if (tab === 'Plus') {
+          useUiStore.getState().setActionsSheetVisible(true);
+        } else if (tab === 'Search') {
+          props.navigation.navigate('Home');
+          useUiStore.getState().setSearchFocused(true);
+        } else {
+          props.navigation.navigate(tab);
+        }
+      }}
+    />
+  );
+};
+
 const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      tabBar={props => {
-        const activeRouteName = props.state.routeNames[props.state.index];
-        return (
-          <BottomTabBar 
-            activeTab={activeRouteName}
-            onTabPress={(tab: string) => {
-              if (tab === 'Plus') {
-                useUiStore.getState().setActionsSheetVisible(true);
-              } else if (tab === 'Search') {
-                useUiStore.getState().setSearchFocused(true);
-              } else {
-                props.navigation.navigate(tab);
-              }
-            }}
-          />
-        );
-      }}
+      tabBar={CustomTabBar}
       screenOptions={{
         headerShown: false,
       }}

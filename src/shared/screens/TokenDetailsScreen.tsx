@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { View, TouchableOpacity, Share, Clipboard } from 'react-native';
+import { View, TouchableOpacity, Share } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import Svg, { Path, Defs, LinearGradient, Stop, Circle } from 'react-native-svg';
 import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import { MainStackScreenProps } from '../../core/navigation/navigationTypes';

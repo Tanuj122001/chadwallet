@@ -33,6 +33,7 @@ export const toast = {
 export const ToastManager: React.FC = () => {
   const [activeToast, setActiveToast] = useState<ToastMessage | null>(null);
   const slideAnim = React.useRef(new Animated.Value(-100)).current;
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const dismissToast = React.useCallback(() => {
     Animated.timing(slideAnim, {
@@ -46,6 +47,9 @@ export const ToastManager: React.FC = () => {
 
   useEffect(() => {
     const handleNewToast = (newToast: ToastMessage) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
       setActiveToast(newToast);
       
       // Animate slide in
@@ -57,16 +61,17 @@ export const ToastManager: React.FC = () => {
       }).start();
 
       // Auto dismiss
-      const timer = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         dismissToast();
       }, 3500);
-
-      return () => clearTimeout(timer);
     };
 
     listeners.add(handleNewToast);
     return () => {
       listeners.delete(handleNewToast);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [slideAnim, dismissToast]);
 

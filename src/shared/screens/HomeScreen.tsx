@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { View, FlatList, TextInput } from 'react-native';
+import { View, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import FontAwesome6 from '@react-native-vector-icons/fontawesome6';
 import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
 import { MainTabScreenProps } from '../../core/navigation/navigationTypes';
 import {
@@ -164,14 +165,19 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
   const [filterVisible, setFilterVisible] = useState(false);
   const [notificationsVisible, setNotificationsVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
-  const [_watchlist, setWatchlist] = useState<string[]>([]);
+  const [watchlist, setWatchlist] = useState<string[]>([]);
   
   const searchInputRef = React.useRef<TextInput>(null);
+  const listRef = React.useRef<FlatList>(null);
 
   React.useEffect(() => {
     if (searchFocused) {
-      searchInputRef.current?.focus();
+      listRef.current?.scrollToOffset({ offset: 0, animated: true });
+      const timer = setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
       setSearchFocused(false);
+      return () => clearTimeout(timer);
     }
   }, [searchFocused, setSearchFocused]);
 
@@ -260,6 +266,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
     <View className="px-5">
       <TokenCard
         item={item}
+        isWatchlisted={watchlist.includes(item.symbol)}
         onPress={() => {
           navigation.navigate('TokenDetails', { 
             tokenId: item.symbol,
@@ -271,7 +278,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
         onWatchlistPress={() => handleWatchlistPress(item.symbol)}
       />
     </View>
-  ), [navigation, handleWatchlistPress]);
+  ), [navigation, handleWatchlistPress, watchlist]);
 
   return (
     <ScreenContainer scrollable={false} padding={false}>
@@ -289,6 +296,7 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
       </View>
 
       <FlatList
+        ref={listRef}
         data={filteredTokens}
         renderItem={renderTokenItem}
         keyExtractor={item => item.id}
@@ -302,6 +310,24 @@ export const HomeScreen: React.FC<MainTabScreenProps<'Home'>> = ({ navigation })
         windowSize={5}
         removeClippedSubviews={true}
       />
+
+      {/* AI Copilot Floating Button Trigger */}
+      <View className="absolute bottom-48 right-6 z-50">
+        <TouchableOpacity
+          onPress={() => setAiVisible(true)}
+          activeOpacity={0.95}
+          className="w-14 h-14 bg-accent rounded-full items-center justify-center shadow-lg"
+          accessibilityLabel="AI Copilot"
+          accessibilityRole="button"
+        >
+          <FontAwesome6
+            name="wand-magic-sparkles"
+            size={20}
+            color="#080A0C"
+            iconStyle="solid"
+          />
+        </TouchableOpacity>
+      </View>
 
       {/* Floating Action Button */}
       <FloatingActionButton onPress={handleWalletActions} />
