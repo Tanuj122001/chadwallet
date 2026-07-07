@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useGreeting } from '../hooks';
 import { AppText } from './AppText';
 import { Logo } from './Logo';
 import { NotificationButton } from './NotificationButton';
@@ -18,6 +19,7 @@ export const WalletHeader: React.FC<WalletHeaderProps> = ({
   onProfilePress = () => {},
   className = '',
 }) => {
+  const greeting = useGreeting();
   return (
     <View 
       className={`flex-row items-center justify-between h-[72px] px-5 bg-transparent ${className}`}
@@ -29,7 +31,7 @@ export const WalletHeader: React.FC<WalletHeaderProps> = ({
       {/* Center: Greeting */}
       <View className="flex-1 ml-4 justify-center">
         <AppText className="text-[#8D94A7] text-[14px] font-medium leading-5">
-          Good Morning,
+          {`${greeting},`}
         </AppText>
         <AppText 
           className="text-white text-[30px] font-bold leading-9 tracking-tight" 

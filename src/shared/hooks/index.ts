@@ -101,4 +101,5 @@ export const useToken = (symbol: TokenSymbol) => {
     fetchStats: () => fetchStats(symbol),
   };
 };
+export * from './useGreeting';
 export default useAuth;
