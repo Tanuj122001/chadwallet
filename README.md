@@ -193,22 +193,51 @@ This repository demonstrates:
 
 ---
 
-# Screenshots
-
-> Screenshots and walkthrough GIFs will be added in an upcoming update.
-
-| Home | Portfolio | AI Copilot |
-|------|-----------|------------|
-| Coming Soon | Coming Soon | Coming Soon |
-
-| Search | Settings | Token Details |
-|---------|-----------|--------------|
-| Coming Soon | Coming Soon | Coming Soon |
-
----
+# 📸 Screenshots
 
 <div align="center">
 
+<img src="https://github.com/user-attachments/assets/cf432419-1769-4182-8068-6037b0ebac01" alt="login" width="200"/>
+<img src="https://github.com/user-attachments/assets/f4ed3d57-9bcb-43f8-a244-0a5120f42e0e" alt="homescreen1" width="200"/>
+<img src="https://github.com/user-attachments/assets/7b164949-a77f-4dd6-b31a-e7df4b9fbe8c" alt="homescreen2" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/416ef80e-af92-4d34-9c44-cae35b500730" alt="homescreen3" width="200"/>
+<img src="https://github.com/user-attachments/assets/52a8754b-efe4-450c-bf21-aeff85bb925b" alt="homescreen4" width="200"/>
+<img src="https://github.com/user-attachments/assets/1f4a1703-bca2-43a7-8852-001fa0faa88f" alt="portfolio" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/bb41369b-3f61-430e-858f-18c39602e9ac" alt="marketasset" width="200"/>
+<img src="https://github.com/user-attachments/assets/20e83df4-ab6a-4b42-8b9a-47856778fc18" alt="token2" width="200"/>
+<img src="https://github.com/user-attachments/assets/97e81788-3292-47af-96e7-02ae9151177a" alt="token1" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/93328a49-ebd3-4fda-a570-e79424eb1142" alt="tokensharinglink" width="200"/>
+<img src="https://github.com/user-attachments/assets/ac1fb0bf-2f95-4a1f-85a5-a8212e1ac52d" alt="aicopilot" width="200"/>
+<img src="https://github.com/user-attachments/assets/b9c157a3-644d-4964-98e9-345ab873b6be" alt="notification" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/07ebb417-90d0-42b7-843f-dfce07dcad2d" alt="walletprofile" width="200"/>
+<img src="https://github.com/user-attachments/assets/904e4b20-27c8-4be3-958c-e71f6bf5008b" alt="quickwalletoperations" width="200"/>
+<img src="https://github.com/user-attachments/assets/16477fe9-fed0-4ec8-b4c8-5200d8daef70" alt="settings" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/88c98289-5c9f-4630-920e-5c0e17a8f720" alt="biometricsettings" width="200"/>
+<img src="https://github.com/user-attachments/assets/95a15212-8fd0-479d-83a8-dc9a178ce069" alt="recoverymenimonyphrase" width="200"/>
+<img src="https://github.com/user-attachments/assets/96f9ad7d-dcb8-4747-812d-d7519c9fe9d4" alt="autolock" width="200"/>
+
+<br><br>
+
+<img src="https://github.com/user-attachments/assets/0f95db6f-6a87-4a7e-b12f-d48635ba42b2" alt="basecurrencysetting" width="200"/>
+<img src="https://github.com/user-attachments/assets/e7049b77-54cb-4055-b942-8f8d198b93a1" alt="app language" width="200"/>
+<img src="https://github.com/user-attachments/assets/9b53b355-4fac-4da6-b458-8393f8b1915c" alt="customrpcnodesettings" width="200"/>
+
+</div>
 ### Built by Tanuj Bhatia
 
 *Focused on building modern mobile applications with scalable architecture and thoughtful engineering.*
