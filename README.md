@@ -293,7 +293,7 @@ See the **LICENSE** file for more information.
 
 # Author
 
-** TANUJ BHATIA **
+ TANUJ BHATIA 
 
 Mobile Application Developer
 
