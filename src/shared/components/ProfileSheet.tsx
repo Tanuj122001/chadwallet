@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { AppText } from './AppText';
 import { Card } from './Card';
@@ -14,6 +15,7 @@ export interface ProfileSheetProps {
 }
 
 export const ProfileSheet: React.FC<ProfileSheetProps> = ({ visible, onClose, onLogoutPress }) => {
+  const insets = useSafeAreaInsets();
   const walletAddress = '9xQ3Z2W6h8U7P7r5e6F4t6r8P7Q7e5F6t6r8P7Q7e5';
 
   const copyAddress = () => {
@@ -24,7 +26,7 @@ export const ProfileSheet: React.FC<ProfileSheetProps> = ({ visible, onClose, on
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <TouchableOpacity activeOpacity={1} onPress={onClose} style={styles.modalOverlay}>
-        <View style={styles.sheetContainer} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
+        <View style={[styles.sheetContainer, { paddingBottom: 20 + insets.bottom }]} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
           {/* Header Drag Handle */}
           <View className="items-center mb-4">
             <View className="w-12 h-1.5 bg-borderAlpha rounded-full" />

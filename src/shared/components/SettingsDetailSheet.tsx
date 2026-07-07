@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from './AppText';
 import { PrimaryButton } from './PrimaryButton';
 import { colors } from '../theme/colors';
@@ -20,6 +21,7 @@ const SEED_WORDS = [
 ];
 
 export const SettingsDetailSheet: React.FC<SettingsDetailSheetProps> = ({ visible, type, onClose }) => {
+  const insets = useSafeAreaInsets();
   const [rpcUrl, setRpcUrl] = useState('https://api.mainnet-beta.solana.com');
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -200,7 +202,7 @@ export const SettingsDetailSheet: React.FC<SettingsDetailSheetProps> = ({ visibl
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <TouchableOpacity activeOpacity={1} onPress={onClose} style={styles.modalOverlay}>
-        <View style={styles.sheetContainer} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
+        <View style={[styles.sheetContainer, { paddingBottom: 20 + insets.bottom }]} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
           {/* Header Drag Handle */}
           <View className="items-center mb-4">
             <View className="w-12 h-1.5 bg-borderAlpha rounded-full" />

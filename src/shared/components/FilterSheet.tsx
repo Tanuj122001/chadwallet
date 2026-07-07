@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from './AppText';
 import { PrimaryButton } from './PrimaryButton';
 import { SecondaryButton } from './SecondaryButton';
@@ -24,6 +25,7 @@ const FILTER_CATEGORIES = [
 ];
 
 export const FilterSheet: React.FC<FilterSheetProps> = ({ visible, onClose, onApplyFilters }) => {
+  const insets = useSafeAreaInsets();
   const [selectedSort, setSelectedSort] = useState('mcap');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
@@ -53,7 +55,7 @@ export const FilterSheet: React.FC<FilterSheetProps> = ({ visible, onClose, onAp
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <TouchableOpacity activeOpacity={1} onPress={onClose} style={styles.modalOverlay}>
-        <View style={styles.sheetContainer} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
+        <View style={[styles.sheetContainer, { paddingBottom: 20 + insets.bottom }]} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
           {/* Header Drag Handle */}
           <View className="items-center mb-4">
             <View className="w-12 h-1.5 bg-borderAlpha rounded-full" />

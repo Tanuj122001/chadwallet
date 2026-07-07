@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from './AppText';
 import { Card } from './Card';
 import { colors } from '../theme/colors';
@@ -56,6 +57,7 @@ const INITIAL_ALERTS: AlertItem[] = [
 ];
 
 export const NotificationsSheet: React.FC<NotificationsSheetProps> = ({ visible, onClose }) => {
+  const insets = useSafeAreaInsets();
   const [alerts, setAlerts] = useState<AlertItem[]>(INITIAL_ALERTS);
 
   const markAllRead = () => {
@@ -84,7 +86,7 @@ export const NotificationsSheet: React.FC<NotificationsSheetProps> = ({ visible,
   return (
     <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <TouchableOpacity activeOpacity={1} onPress={onClose} style={styles.modalOverlay}>
-        <View style={styles.sheetContainer} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
+        <View style={[styles.sheetContainer, { paddingBottom: 20 + insets.bottom }]} className="bg-surface border-t border-borderAlpha rounded-t-3xl p-5">
           {/* Header Drag Handle */}
           <View className="items-center mb-4">
             <View className="w-12 h-1.5 bg-borderAlpha rounded-full" />

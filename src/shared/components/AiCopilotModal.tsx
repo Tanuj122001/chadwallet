@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Modal, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from './AppText';
 import { Card } from './Card';
 import { useAIStore } from '../../features/ai/aiStore';
@@ -18,6 +19,7 @@ const SUGGESTED_PROMPTS = [
 ];
 
 export const AiCopilotModal: React.FC<AiCopilotModalProps> = ({ visible, onClose }) => {
+  const insets = useSafeAreaInsets();
   const { activeConversation, askCopilot, fetchConversation, loading } = useAIStore();
   const [input, setInput] = useState('');
   const conversationId = 'conv_release_candidate_default';
@@ -137,7 +139,7 @@ export const AiCopilotModal: React.FC<AiCopilotModalProps> = ({ visible, onClose
           </View>
 
           {/* Input control block */}
-          <View className="flex-row items-center px-5 py-3 border-t border-borderAlpha bg-surface">
+          <View className="flex-row items-center px-5 border-t border-borderAlpha bg-surface" style={{ paddingTop: 12, paddingBottom: 12 + insets.bottom }}>
             <TextInput
               className="flex-1 text-white text-[15px] font-medium h-12 bg-surfaceHover border border-borderAlpha rounded-radius-xl px-4 py-0"
               placeholder="Ask Copilot..."
