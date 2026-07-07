@@ -293,7 +293,7 @@ See the **LICENSE** file for more information.
 
 # Author
 
-**Quantum Quirk**
+** TANUJ BHATIA **
 
 Mobile Application Developer
 
